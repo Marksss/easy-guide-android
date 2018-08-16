@@ -10,19 +10,22 @@ import android.view.View;
 
 public abstract class RelativeGuideLayer extends AbsGuideLayer {
 
-    protected abstract int getLayoutId();
-
-    public boolean needFullScreenClick(){
-        return true;
-    }
+    protected abstract View onCreateView(Context context);
 
     protected void onViewCreated(View view){
 
     }
 
+    public boolean needFullScreenClick(){
+        return true;
+    }
+
     @Override
     protected final View makeView(Context context) {
-        View view = LayoutInflater.from(context).inflate(getLayoutId(), null);
+        View view = onCreateView(context);
+        if (view == null || !(view instanceof RelativeLayerView)) {
+            throw new IllegalArgumentException("View that returns from onCreateView is null or isn't an instance of RelativeLayerView");
+        }
         if (needFullScreenClick()) {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

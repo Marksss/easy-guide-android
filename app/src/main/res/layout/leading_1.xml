@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<com.github.easyguide.RelativeLayerView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#40000000">
+    android:background="#60000000">
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_centerInParent="true"
-        android:text="leading1111111"/>
+        android:text="leading2222222"/>
 
-</RelativeLayout>
+</com.github.easyguide.RelativeLayerView>

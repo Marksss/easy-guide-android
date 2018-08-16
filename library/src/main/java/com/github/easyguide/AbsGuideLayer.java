@@ -20,6 +20,8 @@ public abstract class AbsGuideLayer {
 
     protected abstract View makeView(Context context);
 
+    protected abstract AbsGuideLayer nextLayer();
+
     public interface ILayerCallback {
         void dismissCurrent();
         void dismissAll();

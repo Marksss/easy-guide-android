@@ -2,6 +2,8 @@ package com.github.easyguide;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 
 /**
@@ -9,6 +11,7 @@ import android.widget.PopupWindow;
  */
 
 public class LayerPopWindow extends PopupWindow implements AbsGuideLayer.ILayerCallback {
+    private FrameLayout mParentView;
     private EasyGuideBuilder mBuilder;
     private int mLayerIndex = 0;
 
@@ -18,32 +21,51 @@ public class LayerPopWindow extends PopupWindow implements AbsGuideLayer.ILayerC
         this.setBackgroundDrawable(new BitmapDrawable());
     }
 
+    public EasyGuideBuilder getBuilder() {
+        return mBuilder;
+    }
+
     public void show() {
-        AbsGuideLayer guideLayer = mBuilder.mGuideLayers.get(mLayerIndex);
-        guideLayer.setCallback(this);
-        View view = guideLayer.makeView(mBuilder.mActivity);
-        this.setContentView(view);
-        this.showAsDropDown(view, mBuilder.mXoff, mBuilder.mYoff);
+        if (mBuilder.mGuideLayer == null) {
+            throw new IllegalArgumentException("the GuideLayer is null!");
+        }
+        mBuilder.mGuideLayer.setCallback(this);
+        View view = mBuilder.mGuideLayer.makeView(mBuilder.mActivity);
+        if (mParentView == null) {
+            mParentView = new FrameLayout(mBuilder.mActivity);
+            mParentView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        }
+        mParentView.addView(view, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        this.setContentView(mParentView);
+        this.showAsDropDown(mParentView, mBuilder.mXoff, mBuilder.mYoff);
     }
 
     @Override
     public void dismissCurrent() {
         if (mBuilder.mOnLayerEndListener != null) {
-            mBuilder.mOnLayerEndListener.onLayerEnd(this, mLayerIndex);
+            mBuilder.mOnLayerEndListener.onLayerEnd(mLayerIndex);
         }
-        mLayerIndex++;
-        if (mLayerIndex >= mBuilder.mGuideLayers.size()) {
+        AbsGuideLayer nextLayer = mBuilder.mGuideLayer.nextLayer();
+        if (nextLayer == null) {
+            mLayerIndex = 0;
             dismiss();
         } else {
-            show();
+            mLayerIndex++;
+            nextLayer.setCallback(this);
+            View view = nextLayer.makeView(mBuilder.mActivity);
+            mParentView.removeAllViews();
+            mParentView.addView(view, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+            this.showAsDropDown(mParentView, mBuilder.mXoff, mBuilder.mYoff);
+            mBuilder.mGuideLayer = nextLayer;
         }
     }
 
     @Override
     public void dismissAll() {
         if (mBuilder.mOnLayerEndListener != null) {
-            mBuilder.mOnLayerEndListener.onLayerEnd(this, mLayerIndex);
+            mBuilder.mOnLayerEndListener.onLayerEnd(mLayerIndex);
         }
         dismiss();
+        mLayerIndex = 0;
     }
 }

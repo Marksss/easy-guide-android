@@ -3,9 +3,6 @@ package com.github.easyguide;
 import android.app.Activity;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by shenxl on 2018/8/16.
  */
@@ -15,20 +12,20 @@ public class EasyGuideBuilder {
     int mWidth = ViewGroup.LayoutParams.MATCH_PARENT;
     int mHeight = ViewGroup.LayoutParams.MATCH_PARENT;
     int mXoff = 0, mYoff = 0;
-    List<AbsGuideLayer> mGuideLayers = new ArrayList<>();
+    AbsGuideLayer mGuideLayer;
     OnLayerEndListener mOnLayerEndListener;
 
     public EasyGuideBuilder(Activity activity) {
-        mActivity = activity;
+        this.mActivity = activity;
     }
 
     public EasyGuideBuilder setWidth(int width) {
-        mWidth = width;
+        this.mWidth = width;
         return this;
     }
 
     public EasyGuideBuilder setHeight(int height) {
-        mHeight = height;
+        this.mHeight = height;
         return this;
     }
 
@@ -43,11 +40,11 @@ public class EasyGuideBuilder {
     }
 
     public void withSingleLayerEnd(OnLayerEndListener onLayerEndListener) {
-        mOnLayerEndListener = onLayerEndListener;
+        this.mOnLayerEndListener = onLayerEndListener;
     }
 
-    public EasyGuideBuilder addLayer(AbsGuideLayer guideLayer) {
-        mGuideLayers.add(guideLayer);
+    public EasyGuideBuilder setGuideLayer(AbsGuideLayer guideLayer) {
+        this.mGuideLayer = guideLayer;
         return this;
     }
 
@@ -56,6 +53,6 @@ public class EasyGuideBuilder {
     }
 
     public interface OnLayerEndListener {
-        void onLayerEnd(LayerPopWindow popWindow, int index);
+        void onLayerEnd(int index);
     }
 }

@@ -2,12 +2,9 @@ package com.github.app;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.easyguide.EasyGuideBuilder;
-import com.github.easyguide.LayerPopWindow;
-import com.github.easyguide.RelativeGuideLayer;
 
 public class MainActivity extends AppCompatActivity {
     private View container;
@@ -22,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new EasyGuideBuilder(MainActivity.this).
-                        addLayer(new CustomGuideLayer()).
+                        setGuideLayer(new CustomGuideLayer0()).
                         build().
                         show();
             }
