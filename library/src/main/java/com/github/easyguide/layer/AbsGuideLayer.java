@@ -1,7 +1,7 @@
-package com.github.easyguide;
+package com.github.easyguide.layer;
 
+import android.app.Activity;
 import android.content.Context;
-import android.graphics.Rect;
 import android.view.View;
 
 /**
@@ -10,6 +10,7 @@ import android.view.View;
 
 public abstract class AbsGuideLayer {
     private ILayerCallback mCallback;
+    private Activity mActivity;
 
     public ILayerCallback getCallback() {
         return mCallback;
@@ -19,9 +20,17 @@ public abstract class AbsGuideLayer {
         mCallback = callback;
     }
 
-    protected abstract View makeView(Context context);
+    public Activity getActivity() {
+        return mActivity;
+    }
 
-    protected abstract AbsGuideLayer nextLayer();
+    public void setActivity(Activity activity) {
+        mActivity = activity;
+    }
+
+    public abstract View makeView(Context context);
+
+    public abstract AbsGuideLayer nextLayer();
 
     public interface ILayerCallback {
         void dismissCurrent();

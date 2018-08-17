@@ -1,4 +1,4 @@
-package com.github.easyguide;
+package com.github.easyguide.layer;
 
 import android.content.Context;
 import android.graphics.BlurMaskFilter;
@@ -7,12 +7,11 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewConfiguration;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+
+import com.github.easyguide.utils.MaskEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +68,9 @@ public class RelativeLayerView extends RelativeLayout {
                 params.setMargins((int) rect.left, (int) rect.top, 0, 0);
                 view.setLayoutParams(params);
                 view.setId(entity.id);
+                if (entity.mOnClickListener != null){
+                    view.setOnClickListener(entity.mOnClickListener);
+                }
                 addView(view);
             }
         }

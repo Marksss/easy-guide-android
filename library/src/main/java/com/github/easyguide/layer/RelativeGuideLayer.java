@@ -1,9 +1,9 @@
-package com.github.easyguide;
+package com.github.easyguide.layer;
 
 import android.content.Context;
-import android.graphics.RectF;
-import android.view.LayoutInflater;
 import android.view.View;
+
+import com.github.easyguide.utils.MaskEntity;
 
 import java.util.List;
 
@@ -25,8 +25,8 @@ public abstract class RelativeGuideLayer extends AbsGuideLayer {
     }
 
     @Override
-    protected final View makeView(Context context) {
-        View view = onCreateView(context);
+    public final View makeView(Context context) {
+        final View view = onCreateView(context);
         if (view == null || !(view instanceof RelativeLayerView)) {
             throw new IllegalArgumentException("View that returns from onCreateView is null or isn't an instance of RelativeLayerView");
         }

@@ -4,10 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.github.easyguide.AbsGuideLayer;
-import com.github.easyguide.MaskEntity;
-import com.github.easyguide.RelativeGuideLayer;
+import com.github.easyguide.layer.AbsGuideLayer;
+import com.github.easyguide.utils.MaskEntity;
+import com.github.easyguide.layer.RelativeGuideLayer;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,16 +23,11 @@ public class CustomGuideLayer1 extends RelativeGuideLayer {
 
     @Override
     protected List<MaskEntity> getTargets() {
-        return null;
+        return Collections.singletonList(MaskEntity.generateFromId(getActivity(), R.id.easy_guide_1));
     }
 
     @Override
-    protected void onViewCreated(View view) {
-
-    }
-
-    @Override
-    protected AbsGuideLayer nextLayer() {
+    public AbsGuideLayer nextLayer() {
         return null;
     }
 }
