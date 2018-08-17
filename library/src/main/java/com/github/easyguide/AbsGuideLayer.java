@@ -1,6 +1,7 @@
 package com.github.easyguide;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.view.View;
 
 /**

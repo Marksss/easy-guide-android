@@ -18,7 +18,6 @@ public class LayerPopWindow extends PopupWindow implements AbsGuideLayer.ILayerC
     LayerPopWindow(EasyGuideBuilder builder) {
         super(builder.mWidth, builder.mHeight);
         this.mBuilder = builder;
-        this.setBackgroundDrawable(new BitmapDrawable());
     }
 
     public EasyGuideBuilder getBuilder() {
@@ -29,6 +28,9 @@ public class LayerPopWindow extends PopupWindow implements AbsGuideLayer.ILayerC
         if (mBuilder.mGuideLayer == null) {
             throw new IllegalArgumentException("the GuideLayer is null!");
         }
+        this.setBackgroundDrawable(new BitmapDrawable());
+        this.setFocusable(true);
+
         mBuilder.mGuideLayer.setCallback(this);
         View view = mBuilder.mGuideLayer.makeView(mBuilder.mActivity);
         if (mParentView == null) {
@@ -42,6 +44,9 @@ public class LayerPopWindow extends PopupWindow implements AbsGuideLayer.ILayerC
 
     @Override
     public void dismissCurrent() {
+        if (!isShowing()){
+            return;
+        }
         if (mBuilder.mOnLayerEndListener != null) {
             mBuilder.mOnLayerEndListener.onLayerEnd(mLayerIndex);
         }
@@ -62,6 +67,9 @@ public class LayerPopWindow extends PopupWindow implements AbsGuideLayer.ILayerC
 
     @Override
     public void dismissAll() {
+        if (!isShowing()){
+            return;
+        }
         if (mBuilder.mOnLayerEndListener != null) {
             mBuilder.mOnLayerEndListener.onLayerEnd(mLayerIndex);
         }

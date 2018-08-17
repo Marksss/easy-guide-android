@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new EasyGuideBuilder(MainActivity.this).
-                        setGuideLayer(new CustomGuideLayer0()).
+                        setGuideLayer(new CustomGuideLayer0(MainActivity.this)).
                         build().
                         show();
             }

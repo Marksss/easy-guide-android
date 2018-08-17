@@ -1,8 +1,11 @@
 package com.github.easyguide;
 
 import android.content.Context;
+import android.graphics.RectF;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import java.util.List;
 
 /**
  * Created by shenxl on 2018/8/16.
@@ -11,8 +14,9 @@ import android.view.View;
 public abstract class RelativeGuideLayer extends AbsGuideLayer {
 
     protected abstract View onCreateView(Context context);
+    protected abstract List<MaskEntity> getTargets();
 
-    protected void onViewCreated(View view){
+    protected void onViewCreated(View view) {
 
     }
 
@@ -34,12 +38,10 @@ public abstract class RelativeGuideLayer extends AbsGuideLayer {
                 }
             });
         }
+
+        RelativeLayerView layerView = (RelativeLayerView) view;
+        layerView.setMaskEntities(getTargets());
         onViewCreated(view);
         return view;
-    }
-
-    public class TargetEntity{
-        float startX, startY;
-        int width, height;
     }
 }

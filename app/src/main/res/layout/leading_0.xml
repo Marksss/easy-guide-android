@@ -10,8 +10,11 @@
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_centerInParent="true"
-        android:text="leading1111111"/>
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/easy_guide_0"
+        android:layout_alignLeft="@+id/easy_guide_0"
+        android:layout_alignRight="@+id/easy_guide_0"
+        android:layout_marginTop="15dp"
+        android:text="this is guide 0"/>
 
 </com.github.easyguide.RelativeLayerView>
