@@ -1,28 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.github.easyguide.layer.RelativeLayerView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <ImageView
+        android:id="@+id/arrow_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_below="@+id/easy_guide_0"
-        android:layout_alignLeft="@+id/easy_guide_0"
-        android:layout_alignRight="@+id/easy_guide_0"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
-        android:text="this is guide 0"/>
+        android:src="@drawable/arrow_yellow_up"
+        app:target_bindId="@+id/easy_guide_0"
+        app:target_bindToBottom="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_below="@+id/easy_guide_2"
-        android:layout_alignLeft="@+id/easy_guide_2"
-        android:layout_alignRight="@+id/easy_guide_2"
-        android:layout_marginTop="15dp"
+        android:layout_alignBottom="@id/arrow_up"
+        android:layout_toLeftOf="@id/arrow_up"
+        android:layout_marginRight="10dp"
+        android:textSize="22sp"
+        android:textColor="#ff6c00"
+        android:text="this is guide 0"/>
+
+    <ImageView
+        android:id="@+id/arrow_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/arrow_yellow_down"
+        app:target_bindId="@+id/easy_guide_2"
+        app:target_bindToTop="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/arrow_down"
+        android:layout_toLeftOf="@+id/arrow_down"
+        android:layout_marginRight="15dp"
+        android:textSize="22sp"
+        android:textColor="#ff6c00"
         android:text="this is guide 2"/>
 
 </com.github.easyguide.layer.RelativeLayerView>

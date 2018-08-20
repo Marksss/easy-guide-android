@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RelativeLayerView">
+        <attr name="target_bindId" format="integer" />
+        <attr name="target_bindToTop" format="boolean" />
+        <attr name="target_bindToBottom" format="boolean" />
+        <attr name="target_bindToLeft" format="boolean" />
+        <attr name="target_bindToRight" format="boolean" />
+    </declare-styleable>
+</resources>

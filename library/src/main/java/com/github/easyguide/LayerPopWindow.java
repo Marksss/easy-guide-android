@@ -31,8 +31,6 @@ public class LayerPopWindow extends PopupWindow implements AbsGuideLayer.ILayerC
         if (mBuilder.mGuideLayer == null) {
             throw new IllegalArgumentException("the GuideLayer is null!");
         }
-        setBackgroundDrawable(new BitmapDrawable());
-        setFocusable(true);
 
         mBuilder.mGuideLayer.setCallback(this);
         mBuilder.mGuideLayer.setActivity(mBuilder.mActivity);

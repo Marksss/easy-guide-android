@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.easyguide.layer.AbsGuideLayer;
-import com.github.easyguide.utils.MaskEntity;
+import com.github.easyguide.layer.RelativeLayerView;
 import com.github.easyguide.layer.RelativeGuideLayer;
 
 import java.util.Collections;
@@ -22,8 +22,8 @@ public class CustomGuideLayer1 extends RelativeGuideLayer {
     }
 
     @Override
-    protected List<MaskEntity> getTargets() {
-        return Collections.singletonList(MaskEntity.generateFromId(getActivity(), R.id.easy_guide_1));
+    protected void onViewCreated(RelativeLayerView view) {
+
     }
 
     @Override

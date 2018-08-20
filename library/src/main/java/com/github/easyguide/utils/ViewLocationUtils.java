@@ -9,7 +9,9 @@ import android.view.View;
  */
 
 public class ViewLocationUtils {
-    public static Rect getViewAbsRect(Activity activity, View view) {
+    public static int mOffsetY;
+
+    public static int getOffsetY(Activity activity){
         int parentY = 0;
         final int[] locWin = new int[2];
         activity.getWindow().getDecorView().getLocationInWindow(locWin);
@@ -26,11 +28,16 @@ public class ViewLocationUtils {
                 e.printStackTrace();
             }
         }
+        mOffsetY = parentY;
+        return parentY;
+    }
+
+    public static Rect getViewAbsRect(Activity activity, View view) {
         int[] locView = new int[2];
         view.getLocationInWindow(locView);
         Rect rect = new Rect();
         rect.set(locView[0], locView[1], locView[0] + view.getMeasuredWidth(), locView[1] + view.getMeasuredHeight());
-        rect.offset(0, -parentY);
+        rect.offset(0, -getOffsetY(activity));
         return rect;
     }
 }

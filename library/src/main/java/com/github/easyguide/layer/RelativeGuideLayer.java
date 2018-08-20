@@ -3,7 +3,7 @@ package com.github.easyguide.layer;
 import android.content.Context;
 import android.view.View;
 
-import com.github.easyguide.utils.MaskEntity;
+import com.github.easyguide.utils.ViewLocationUtils;
 
 import java.util.List;
 
@@ -14,14 +14,18 @@ import java.util.List;
 public abstract class RelativeGuideLayer extends AbsGuideLayer {
 
     protected abstract View onCreateView(Context context);
-    protected abstract List<MaskEntity> getTargets();
-
-    protected void onViewCreated(View view) {
-
-    }
+    protected abstract void onViewCreated(RelativeLayerView view);
 
     public boolean needFullScreenClick(){
         return true;
+    }
+
+    protected void addTargetView(RelativeLayerView container, int id){
+        addTargetView(container, getActivity().findViewById(id));
+    }
+
+    protected void addTargetView(RelativeLayerView container, View view){
+        container.addTargetsRect(view.getId(), ViewLocationUtils.getViewAbsRect(getActivity(), view));
     }
 
     @Override
@@ -39,9 +43,7 @@ public abstract class RelativeGuideLayer extends AbsGuideLayer {
             });
         }
 
-        RelativeLayerView layerView = (RelativeLayerView) view;
-        layerView.setMaskEntities(getTargets());
-        onViewCreated(view);
+        onViewCreated((RelativeLayerView) view);
         return view;
     }
 }
