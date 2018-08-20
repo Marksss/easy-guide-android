@@ -1,4 +1,4 @@
-package com.github.easyguide.utils;
+package com.github.easyguide;
 
 import android.app.Activity;
 import android.graphics.Rect;

@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.github.easyguide.EasyGuideBuilder;
+import com.github.easyguide.EasyGuideWindow;
 
 public class MainActivity extends AppCompatActivity {
     private View container;
@@ -18,10 +18,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.easy_guide_0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new EasyGuideBuilder(MainActivity.this).
-                        setGuideLayer(new CustomGuideLayer0()).
-                        build().
-                        show();
+                new EasyGuideWindow(MainActivity.this, new CustomGuideLayer0()).show();
             }
         });
     }

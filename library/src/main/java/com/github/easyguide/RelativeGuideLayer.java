@@ -1,17 +1,16 @@
-package com.github.easyguide.layer;
+package com.github.easyguide;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.view.View;
-
-import com.github.easyguide.utils.ViewLocationUtils;
-
-import java.util.List;
 
 /**
  * Created by shenxl on 2018/8/16.
  */
 
-public abstract class RelativeGuideLayer extends AbsGuideLayer {
+public abstract class RelativeGuideLayer extends AbsGuideLayer implements RelativeLayerView.DrawCallBack {
 
     protected abstract View onCreateView(Context context);
     protected abstract void onViewCreated(RelativeLayerView view);
@@ -30,8 +29,11 @@ public abstract class RelativeGuideLayer extends AbsGuideLayer {
 
     @Override
     public final View makeView(Context context) {
-        final View view = onCreateView(context);
-        if (view == null || !(view instanceof RelativeLayerView)) {
+        View view = onCreateView(context);
+        if (view == null) {
+            view = new RelativeLayerView(context);
+        }
+        if (!(view instanceof RelativeLayerView)) {
             throw new IllegalArgumentException("View that returns from onCreateView is null or isn't an instance of RelativeLayerView");
         }
         if (needFullScreenClick()) {
@@ -43,7 +45,17 @@ public abstract class RelativeGuideLayer extends AbsGuideLayer {
             });
         }
 
+        ((RelativeLayerView) view).setDrawCallBack(this);
         onViewCreated((RelativeLayerView) view);
         return view;
+    }
+
+    @Override
+    public void onDraw(int id, Rect rect, Canvas canvas, Paint paint){
+        drawRect(rect, canvas, paint);
+    }
+
+    protected void drawRect(Rect rect, Canvas canvas, Paint paint){
+        canvas.drawRect(rect, paint);
     }
 }

@@ -1,4 +1,4 @@
-package com.github.easyguide.layer;
+package com.github.easyguide;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,9 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.github.easyguide.R;
-import com.github.easyguide.utils.ViewLocationUtils;
-
 /**
  * Created by shenxl on 2018/8/16.
  */
@@ -27,6 +24,7 @@ public class RelativeLayerView extends RelativeLayout {
     private SparseArray<Rect> mTargetRects = new SparseArray<>();
     private Paint mPaint;
     private boolean mHasMarginReset;
+    private DrawCallBack mDrawCallBack;
 
     public RelativeLayerView(Context context) {
         super(context);
@@ -60,6 +58,10 @@ public class RelativeLayerView extends RelativeLayout {
         setWillNotDraw(false);
     }
 
+    void setDrawCallBack(DrawCallBack drawCallBack) {
+        mDrawCallBack = drawCallBack;
+    }
+
     void addTargetsRect(int id, Rect rect) {
         if (id != NO_ID) {
             mTargetRects.put(id, rect);
@@ -70,58 +72,64 @@ public class RelativeLayerView extends RelativeLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (!mHasMarginReset && mTargetRects.size() > 0) {
+            mHasMarginReset = true;
+            int totalWidth = MeasureSpec.getSize(widthMeasureSpec);
+            int totalHeight = MeasureSpec.getSize(heightMeasureSpec);
 
-        if (mHasMarginReset) {
-            return;
+            for (int i = 0; i < getChildCount(); i++){
+                View child = getChildAt(i);
+                LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
+                if (layoutParams.mTargetAbove != NO_ID) {
+                    layoutParams.bottomMargin += totalHeight - mTargetRects.get(layoutParams.mTargetAbove).top - ViewLocationUtils.mOffsetY;
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                }
+                if (layoutParams.mTargetBelow != NO_ID) {
+                    layoutParams.topMargin += mTargetRects.get(layoutParams.mTargetBelow).bottom;
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+                }
+                if (layoutParams.mTargetToLeft != NO_ID) {
+                    layoutParams.rightMargin += totalWidth - mTargetRects.get(layoutParams.mTargetToLeft).left;
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                }
+                if (layoutParams.mTargetToRight != NO_ID) {
+                    layoutParams.leftMargin += mTargetRects.get(layoutParams.mTargetToRight).right;
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                }
+                if (layoutParams.mTargetAlignTop != NO_ID) {
+                    layoutParams.topMargin += mTargetRects.get(layoutParams.mTargetAlignTop).top;
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+                }
+                if (layoutParams.mTargetAlignBottom != NO_ID) {
+                    layoutParams.bottomMargin += totalHeight - mTargetRects.get(layoutParams.mTargetAlignBottom).bottom - ViewLocationUtils.mOffsetY;
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                }
+                if (layoutParams.mTargetAlignLeft != NO_ID) {
+                    layoutParams.leftMargin += mTargetRects.get(layoutParams.mTargetAlignLeft).left;
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                }
+                if (layoutParams.mTargetAlignRight != NO_ID) {
+                    layoutParams.rightMargin += totalWidth - mTargetRects.get(layoutParams.mTargetAlignRight).right;
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                }
+                child.setLayoutParams(layoutParams);
+            }
         }
-        mHasMarginReset = true;
 
-        for (int i = 0; i < getChildCount(); i++){
-            View child = getChildAt(i);
-            LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
-            if (layoutParams.mTargetAbove != NO_ID) {
-                layoutParams.bottomMargin += getMeasuredHeight() - mTargetRects.get(layoutParams.mTargetAbove).top - ViewLocationUtils.mOffsetY;
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            }
-            if (layoutParams.mTargetBelow != NO_ID) {
-                layoutParams.topMargin += mTargetRects.get(layoutParams.mTargetBelow).bottom;
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            }
-            if (layoutParams.mTargetToLeft != NO_ID) {
-                layoutParams.rightMargin += getMeasuredWidth() - mTargetRects.get(layoutParams.mTargetToLeft).left;
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            }
-            if (layoutParams.mTargetToRight != NO_ID) {
-                layoutParams.leftMargin += mTargetRects.get(layoutParams.mTargetToRight).right;
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            }
+        super.onMeasure(MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.EXACTLY));
+    }
 
-            if (layoutParams.mTargetAlignTop != NO_ID) {
-                layoutParams.topMargin += mTargetRects.get(layoutParams.mTargetAlignTop).top;
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            }
-            if (layoutParams.mTargetAlignBottom != NO_ID) {
-                layoutParams.bottomMargin += getMeasuredHeight() - mTargetRects.get(layoutParams.mTargetAlignBottom).bottom - ViewLocationUtils.mOffsetY;
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            }
-            if (layoutParams.mTargetAlignLeft != NO_ID) {
-                layoutParams.leftMargin += mTargetRects.get(layoutParams.mTargetAlignLeft).left;
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            }
-            if (layoutParams.mTargetAlignRight != NO_ID) {
-                layoutParams.rightMargin += getMeasuredWidth() - mTargetRects.get(layoutParams.mTargetAlignRight).right;
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            }
-            child.setLayoutParams(layoutParams);
-        }
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
     }
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
         canvas.drawColor(DEFAULT_BACKGROUND_COLOR);
         for (int i = 0; i < mTargetRects.size(); i++) {
-            canvas.drawRect(mTargetRects.valueAt(i), mPaint);
+            mDrawCallBack.onDraw(mTargetRects.keyAt(i), mTargetRects.valueAt(i), canvas, mPaint);
         }
         super.dispatchDraw(canvas);
     }
@@ -140,8 +148,8 @@ public class RelativeLayerView extends RelativeLayout {
     }
 
     public static class LayoutParams extends RelativeLayout.LayoutParams {
-        int mTargetAbove, mTargetBelow, mTargetToLeft, mTargetToRight;
-        int mTargetAlignTop, mTargetAlignBottom, mTargetAlignLeft, mTargetAlignRight;
+        public int mTargetAbove, mTargetBelow, mTargetToLeft, mTargetToRight;
+        public int mTargetAlignTop, mTargetAlignBottom, mTargetAlignLeft, mTargetAlignRight;
 
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
@@ -168,5 +176,9 @@ public class RelativeLayerView extends RelativeLayout {
         public LayoutParams(MarginLayoutParams source) {
             super(source);
         }
+    }
+
+    interface DrawCallBack{
+        void onDraw(int id, Rect rect, Canvas canvas, Paint paint);
     }
 }

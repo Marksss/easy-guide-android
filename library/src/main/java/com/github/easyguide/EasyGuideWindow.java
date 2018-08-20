@@ -1,47 +1,53 @@
 package com.github.easyguide;
 
-import android.graphics.drawable.BitmapDrawable;
-import android.os.IBinder;
+import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.PopupWindow;
-
-import com.github.easyguide.layer.AbsGuideLayer;
 
 /**
  * Created by shenxl on 2018/8/16.
  */
 
-public class LayerPopWindow extends PopupWindow implements AbsGuideLayer.ILayerCallback {
+public class EasyGuideWindow extends PopupWindow implements AbsGuideLayer.ILayerCallback {
     private FrameLayout mParentView;
-    private EasyGuideBuilder mBuilder;
+    private Activity mActivity;
+    private AbsGuideLayer mGuideLayer;
+    private OnLayerEndListener mOnLayerEndListener;
     private int mLayerIndex = 0;
 
-    LayerPopWindow(EasyGuideBuilder builder) {
-        super(builder.mWidth, builder.mHeight);
-        this.mBuilder = builder;
+    public EasyGuideWindow(Activity activity, AbsGuideLayer guideLayer) {
+        super(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        this.mActivity = activity;
+        this.mGuideLayer = guideLayer;
     }
 
-    public EasyGuideBuilder getBuilder() {
-        return mBuilder;
+    public EasyGuideWindow setOnLayerEndListener(OnLayerEndListener onLayerEndListener) {
+        mOnLayerEndListener = onLayerEndListener;
+        return this;
+    }
+
+    public AbsGuideLayer getCurrentLayer() {
+        return mGuideLayer;
     }
 
     public void show() {
-        if (mBuilder.mGuideLayer == null) {
+        if (mGuideLayer == null) {
             throw new IllegalArgumentException("the GuideLayer is null!");
         }
 
-        mBuilder.mGuideLayer.setCallback(this);
-        mBuilder.mGuideLayer.setActivity(mBuilder.mActivity);
-        View view = mBuilder.mGuideLayer.makeView(mBuilder.mActivity);
+        mGuideLayer.setCallback(this);
+        mGuideLayer.setActivity(mActivity);
+        View view = mGuideLayer.makeView(mActivity);
         if (mParentView == null) {
-            mParentView = new FrameLayout(mBuilder.mActivity);
+            mParentView = new FrameLayout(mActivity);
             mParentView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         }
         mParentView.addView(view, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         setContentView(mParentView);
-        super.showAsDropDown(mParentView, mBuilder.mXoff, mBuilder.mYoff, Gravity.NO_GRAVITY);
+        super.showAsDropDown(mParentView, 0, 0, Gravity.NO_GRAVITY);
     }
 
     @Override
@@ -49,22 +55,22 @@ public class LayerPopWindow extends PopupWindow implements AbsGuideLayer.ILayerC
         if (!isShowing()){
             return;
         }
-        if (mBuilder.mOnLayerEndListener != null) {
-            mBuilder.mOnLayerEndListener.onLayerEnd(mLayerIndex);
+        if (mOnLayerEndListener != null) {
+            mOnLayerEndListener.onLayerEnd(mLayerIndex);
         }
-        AbsGuideLayer nextLayer = mBuilder.mGuideLayer.nextLayer();
+        AbsGuideLayer nextLayer = mGuideLayer.nextLayer();
         if (nextLayer == null) {
             mLayerIndex = 0;
             dismiss();
         } else {
             mLayerIndex++;
             nextLayer.setCallback(this);
-            nextLayer.setActivity(mBuilder.mActivity);
-            View view = nextLayer.makeView(mBuilder.mActivity);
+            nextLayer.setActivity(mActivity);
+            View view = nextLayer.makeView(mActivity);
             mParentView.removeAllViews();
             mParentView.addView(view, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-            super.showAsDropDown(mParentView, mBuilder.mXoff, mBuilder.mYoff, Gravity.NO_GRAVITY);
-            mBuilder.mGuideLayer = nextLayer;
+            super.showAsDropDown(mParentView, 0, 0, Gravity.NO_GRAVITY);
+            mGuideLayer = nextLayer;
         }
     }
 
@@ -73,8 +79,8 @@ public class LayerPopWindow extends PopupWindow implements AbsGuideLayer.ILayerC
         if (!isShowing()){
             return;
         }
-        if (mBuilder.mOnLayerEndListener != null) {
-            mBuilder.mOnLayerEndListener.onLayerEnd(mLayerIndex);
+        if (mOnLayerEndListener != null) {
+            mOnLayerEndListener.onLayerEnd(mLayerIndex);
         }
         dismiss();
         mLayerIndex = 0;
@@ -88,5 +94,9 @@ public class LayerPopWindow extends PopupWindow implements AbsGuideLayer.ILayerC
     @Override
     public void showAsDropDown(View anchor, int xoff, int yoff, int gravity) {
         throw new UnsupportedOperationException("showAsDropDown is not supported in LayerPopWindow");
+    }
+    
+    public interface OnLayerEndListener {
+        void onLayerEnd(int index);
     }
 }

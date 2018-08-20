@@ -1,4 +1,4 @@
-package com.github.easyguide.layer;
+package com.github.easyguide;
 
 import android.app.Activity;
 import android.content.Context;

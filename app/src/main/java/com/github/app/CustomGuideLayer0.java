@@ -1,16 +1,12 @@
 package com.github.app;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.github.easyguide.layer.AbsGuideLayer;
-import com.github.easyguide.layer.RelativeLayerView;
-import com.github.easyguide.layer.RelativeGuideLayer;
-
-import java.util.Arrays;
-import java.util.List;
+import com.github.easyguide.AbsGuideLayer;
+import com.github.easyguide.RelativeLayerView;
+import com.github.easyguide.RelativeGuideLayer;
 
 /**
  * Created by shenxl on 2018/8/16.
