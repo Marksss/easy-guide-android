@@ -77,32 +77,43 @@ public class RelativeLayerView extends RelativeLayout {
         }
         mHasMarginReset = true;
 
-        for (int j = 0; j < mTargetRects.size(); j++) {
-            int id = mTargetRects.keyAt(j);
-            Rect rect = mTargetRects.valueAt(j);
-            for (int i = 0; i < getChildCount(); i++){
-                View child = getChildAt(i);
-                LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
-                if (id == layoutParams.mTargetId){
-                    if (layoutParams.mIsBindToTop) {
-                        layoutParams.bottomMargin += getMeasuredHeight() - rect.top - ViewLocationUtils.mOffsetY;
-                        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                    }
-                    if (layoutParams.mIsBindToBottom) {
-                        layoutParams.topMargin += rect.bottom;
-                        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                    }
-                    if (layoutParams.mIsBindToLeft) {
-                        layoutParams.rightMargin += getMeasuredWidth() - rect.left;
-                        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                    }
-                    if (layoutParams.mIsBindToRight) {
-                        layoutParams.leftMargin += rect.right;
-                        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                    }
-                    child.setLayoutParams(layoutParams);
-                }
+        for (int i = 0; i < getChildCount(); i++){
+            View child = getChildAt(i);
+            LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
+            if (layoutParams.mTargetAbove != NO_ID) {
+                layoutParams.bottomMargin += getMeasuredHeight() - mTargetRects.get(layoutParams.mTargetAbove).top - ViewLocationUtils.mOffsetY;
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             }
+            if (layoutParams.mTargetBelow != NO_ID) {
+                layoutParams.topMargin += mTargetRects.get(layoutParams.mTargetBelow).bottom;
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            }
+            if (layoutParams.mTargetToLeft != NO_ID) {
+                layoutParams.rightMargin += getMeasuredWidth() - mTargetRects.get(layoutParams.mTargetToLeft).left;
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            }
+            if (layoutParams.mTargetToRight != NO_ID) {
+                layoutParams.leftMargin += mTargetRects.get(layoutParams.mTargetToRight).right;
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            }
+
+            if (layoutParams.mTargetAlignTop != NO_ID) {
+                layoutParams.topMargin += mTargetRects.get(layoutParams.mTargetAlignTop).top;
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            }
+            if (layoutParams.mTargetAlignBottom != NO_ID) {
+                layoutParams.bottomMargin += getMeasuredHeight() - mTargetRects.get(layoutParams.mTargetAlignBottom).bottom - ViewLocationUtils.mOffsetY;
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            }
+            if (layoutParams.mTargetAlignLeft != NO_ID) {
+                layoutParams.leftMargin += mTargetRects.get(layoutParams.mTargetAlignLeft).left;
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            }
+            if (layoutParams.mTargetAlignRight != NO_ID) {
+                layoutParams.rightMargin += getMeasuredWidth() - mTargetRects.get(layoutParams.mTargetAlignRight).right;
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            }
+            child.setLayoutParams(layoutParams);
         }
     }
 
@@ -129,17 +140,21 @@ public class RelativeLayerView extends RelativeLayout {
     }
 
     public static class LayoutParams extends RelativeLayout.LayoutParams {
-        boolean mIsBindToTop, mIsBindToBottom, mIsBindToLeft, mIsBindToRight;
-        int mTargetId;
+        int mTargetAbove, mTargetBelow, mTargetToLeft, mTargetToRight;
+        int mTargetAlignTop, mTargetAlignBottom, mTargetAlignLeft, mTargetAlignRight;
 
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
             TypedArray ta = c.obtainStyledAttributes(attrs, R.styleable.RelativeLayerView);
-            mIsBindToTop = ta.getBoolean(R.styleable.RelativeLayerView_target_bindToTop, false);
-            mIsBindToBottom = ta.getBoolean(R.styleable.RelativeLayerView_target_bindToBottom, false);
-            mIsBindToLeft = ta.getBoolean(R.styleable.RelativeLayerView_target_bindToLeft, false);
-            mIsBindToRight = ta.getBoolean(R.styleable.RelativeLayerView_target_bindToRight, false);
-            mTargetId = ta.getResourceId(R.styleable.RelativeLayerView_target_bindId, NO_ID);
+            mTargetAbove = ta.getResourceId(R.styleable.RelativeLayerView_target_above, NO_ID);
+            mTargetBelow = ta.getResourceId(R.styleable.RelativeLayerView_target_below, NO_ID);
+            mTargetToLeft = ta.getResourceId(R.styleable.RelativeLayerView_target_toLeft, NO_ID);
+            mTargetToRight = ta.getResourceId(R.styleable.RelativeLayerView_target_toRight, NO_ID);
+
+            mTargetAlignBottom = ta.getResourceId(R.styleable.RelativeLayerView_target_alignBottom, NO_ID);
+            mTargetAlignTop = ta.getResourceId(R.styleable.RelativeLayerView_target_alignTop, NO_ID);
+            mTargetAlignLeft= ta.getResourceId(R.styleable.RelativeLayerView_target_alignLeft, NO_ID);
+            mTargetAlignRight = ta.getResourceId(R.styleable.RelativeLayerView_target_alignRight, NO_ID);
         }
 
         public LayoutParams(int width, int height) {
