@@ -10,14 +10,10 @@ import android.view.View;
  * Created by shenxl on 2018/8/16.
  */
 
-public abstract class RelativeGuideLayer extends AbsGuideLayer implements RelativeLayerView.DrawCallBack {
+public abstract class RelativeGuideLayer extends AbsGuideLayer
+        implements RelativeLayerView.DrawCallBack, RelativeLayerView.WindowCircleLinster {
 
-    protected abstract View onCreateView(Context context);
-    protected abstract void onViewCreated(RelativeLayerView view);
-
-    public boolean needFullScreenClick(){
-        return true;
-    }
+    protected abstract RelativeLayerView onCreateView(Context context);
 
     protected void addTargetView(RelativeLayerView container, int id){
         addTargetView(container, getActivity().findViewById(id));
@@ -29,25 +25,24 @@ public abstract class RelativeGuideLayer extends AbsGuideLayer implements Relati
 
     @Override
     public final View makeView(Context context) {
-        View view = onCreateView(context);
+        RelativeLayerView view = onCreateView(context);
         if (view == null) {
             view = new RelativeLayerView(context);
         }
-        if (!(view instanceof RelativeLayerView)) {
-            throw new IllegalArgumentException("View that returns from onCreateView is null or isn't an instance of RelativeLayerView");
-        }
-        if (needFullScreenClick()) {
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getCallback().dismissCurrent();
-                }
-            });
-        }
 
-        ((RelativeLayerView) view).setDrawCallBack(this);
-        onViewCreated((RelativeLayerView) view);
+        view.setDrawCallBack(this);
+        view.setWindowCircleLinster(this);
         return view;
+    }
+
+    @Override
+    public void onLayerAttached(RelativeLayerView view) {
+        // TODO: 2018/8/23 touch event && show oncreate
+    }
+
+    @Override
+    public void onLayerDetached(RelativeLayerView view) {
+
     }
 
     @Override

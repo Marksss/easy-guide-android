@@ -25,6 +25,7 @@ public class RelativeLayerView extends RelativeLayout {
     private Paint mPaint;
     private boolean mHasMarginReset;
     private DrawCallBack mDrawCallBack;
+    private WindowCircleLinster mWindowCircleLinster;
 
     public RelativeLayerView(Context context) {
         super(context);
@@ -62,11 +63,31 @@ public class RelativeLayerView extends RelativeLayout {
         mDrawCallBack = drawCallBack;
     }
 
+    public void setWindowCircleLinster(WindowCircleLinster windowCircleLinster) {
+        mWindowCircleLinster = windowCircleLinster;
+    }
+
     void addTargetsRect(int id, Rect rect) {
         if (id != NO_ID) {
             mTargetRects.put(id, rect);
         } else {
             mTargetRects.put(mTargetRects.size(), rect);
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (mWindowCircleLinster != null) {
+            mWindowCircleLinster.onLayerAttached(this);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mWindowCircleLinster != null) {
+            mWindowCircleLinster.onLayerDetached(this);
         }
     }
 
@@ -81,7 +102,7 @@ public class RelativeLayerView extends RelativeLayout {
                 View child = getChildAt(i);
                 LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
                 if (layoutParams.mTargetAbove != NO_ID) {
-                    layoutParams.bottomMargin += totalHeight - mTargetRects.get(layoutParams.mTargetAbove).top - ViewLocationUtils.mOffsetY;
+                    layoutParams.bottomMargin += totalHeight - mTargetRects.get(layoutParams.mTargetAbove).top;
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 }
                 if (layoutParams.mTargetBelow != NO_ID) {
@@ -101,7 +122,7 @@ public class RelativeLayerView extends RelativeLayout {
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
                 }
                 if (layoutParams.mTargetAlignBottom != NO_ID) {
-                    layoutParams.bottomMargin += totalHeight - mTargetRects.get(layoutParams.mTargetAlignBottom).bottom - ViewLocationUtils.mOffsetY;
+                    layoutParams.bottomMargin += totalHeight - mTargetRects.get(layoutParams.mTargetAlignBottom).bottom;
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 }
                 if (layoutParams.mTargetAlignLeft != NO_ID) {
@@ -180,5 +201,10 @@ public class RelativeLayerView extends RelativeLayout {
 
     interface DrawCallBack{
         void onDraw(int id, Rect rect, Canvas canvas, Paint paint);
+    }
+
+    interface WindowCircleLinster {
+        void onLayerAttached(RelativeLayerView view);
+        void onLayerDetached(RelativeLayerView view);
     }
 }

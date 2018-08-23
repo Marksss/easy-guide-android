@@ -9,8 +9,6 @@ import android.view.View;
  */
 
 public class ViewLocationUtils {
-    public static int mOffsetY;
-
     public static int getOffsetY(Activity activity){
         int parentY = 0;
         final int[] locWin = new int[2];
@@ -28,7 +26,6 @@ public class ViewLocationUtils {
                 e.printStackTrace();
             }
         }
-        mOffsetY = parentY;
         return parentY;
     }
 

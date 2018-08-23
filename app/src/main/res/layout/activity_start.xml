@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp">
+
+    <Button
+        android:id="@+id/btn_basic_usage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="basic usage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_multiple_layers"/>
+
+    <Button
+        android:id="@+id/btn_multiple_layers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="multiple layers"
+        app:layout_constraintTop_toBottomOf="@id/btn_basic_usage"
+        app:layout_constraintBottom_toTopOf="@id/btn_animation"/>
+
+    <Button
+        android:id="@+id/btn_animation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="with animation"
+        app:layout_constraintTop_toBottomOf="@id/btn_multiple_layers"
+        app:layout_constraintBottom_toTopOf="@id/btn_listview"/>
+
+    <Button
+        android:id="@+id/btn_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="on listview"
+        app:layout_constraintTop_toBottomOf="@id/btn_animation"
+        app:layout_constraintBottom_toTopOf="@id/btn_recyclerivew"/>
+
+    <Button
+        android:id="@+id/btn_recyclerivew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="on recyclerview"
+        app:layout_constraintTop_toBottomOf="@id/btn_listview"
+        app:layout_constraintBottom_toTopOf="@id/btn_dialog"/>
+
+    <Button
+        android:id="@+id/btn_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="on dialog"
+        app:layout_constraintTop_toBottomOf="@id/btn_recyclerivew"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>
