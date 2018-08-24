@@ -17,18 +17,13 @@ public class MultiLayersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multi_layers);
 
-        findViewById(R.id.easy_guide_0).setOnClickListener(new View.OnClickListener() {
+        MultiLayer0 layer = new MultiLayer0(MultiLayersActivity.this);
+        layer.setSingleClickListener(new RelativeGuideLayer.onSingleClickListener() {
             @Override
-            public void onClick(View v) {
-                MultiLayer0 layer = new MultiLayer0(MultiLayersActivity.this);
-                layer.setSingleClickListener(new RelativeGuideLayer.onSingleClickListener() {
-                    @Override
-                    public void onClick(int id, RelativeLayerView container, AbsGuideLayer.ILayerCallback callback) {
-                        callback.dismissCurrent();
-                    }
-                });
-                new EasyGuideWindow(MultiLayersActivity.this, layer).show();
+            public void onClick(int id, RelativeLayerView container, AbsGuideLayer.ILayerCallback callback) {
+                callback.dismissCurrent();
             }
         });
+        new EasyGuideWindow(MultiLayersActivity.this, layer).show(getFragmentManager(), "");
     }
 }

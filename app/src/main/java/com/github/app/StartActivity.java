@@ -24,7 +24,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AbsGuideLayer basicLayer = new RelativeGuideLayer(StartActivity.this).addTargetView(R.id.btn_basic_usage);
-                new EasyGuideWindow(StartActivity.this, basicLayer).show();
+                new EasyGuideWindow(StartActivity.this, basicLayer).show(getFragmentManager(), "");
             }
         });
 

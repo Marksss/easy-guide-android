@@ -46,6 +46,7 @@ public class RelativeGuideLayer extends AbsGuideLayer
     }
 
     public RelativeGuideLayer addTargetView(View view){
+        // TODO: 2018/8/24
         return addTargetView(view.getId(), ViewLocationUtils.getViewAbsRect(mActivity, view));
     }
 
