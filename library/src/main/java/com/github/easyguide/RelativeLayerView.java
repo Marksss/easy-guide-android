@@ -10,6 +10,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.SparseArray;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -26,6 +27,8 @@ public class RelativeLayerView extends RelativeLayout {
     private boolean mHasMarginReset;
     private DrawCallBack mDrawCallBack;
     private WindowCircleLinster mWindowCircleLinster;
+    private LayerClickListener mLayerClickListener;
+    private float mDownX, mDownY;
 
     public RelativeLayerView(Context context) {
         super(context);
@@ -65,6 +68,10 @@ public class RelativeLayerView extends RelativeLayout {
 
     public void setWindowCircleLinster(WindowCircleLinster windowCircleLinster) {
         mWindowCircleLinster = windowCircleLinster;
+    }
+
+    public void setLayerClickListener(LayerClickListener layerClickListener) {
+        mLayerClickListener = layerClickListener;
     }
 
     void addTargetsRect(int id, Rect rect) {
@@ -149,10 +156,49 @@ public class RelativeLayerView extends RelativeLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         canvas.drawColor(DEFAULT_BACKGROUND_COLOR);
-        for (int i = 0; i < mTargetRects.size(); i++) {
-            mDrawCallBack.onDraw(mTargetRects.keyAt(i), mTargetRects.valueAt(i), canvas, mPaint);
+        if (mDrawCallBack != null) {
+            for (int i = 0; i < mTargetRects.size(); i++) {
+                mDrawCallBack.onDraw(mTargetRects.keyAt(i), mTargetRects.valueAt(i), canvas, mPaint);
+            }
         }
         super.dispatchDraw(canvas);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = event.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                mDownX = event.getX();
+                mDownY = event.getY();
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                float upX = event.getX();
+                float upY = event.getY();
+                if (Math.abs(upX - mDownX) < 10 && Math.abs(upY - mDownY) < 10) {
+                    if (mLayerClickListener != null) {
+                        mLayerClickListener.onFullClick();
+                        for (int i = 0; i < mTargetRects.size(); i++) {
+                            if (contains(mTargetRects.valueAt(i), upX, upY)){
+                                mLayerClickListener.onSingleClick(mTargetRects.keyAt(i));
+                                return true;
+                            }
+                        }
+                    }
+                    performClick();
+                }
+                break;
+
+        }
+        return super.onTouchEvent(event);
+    }
+
+    private boolean contains(Rect rect, float x, float y) {
+        return rect.left < rect.right && rect.top < rect.bottom  // check for empty first
+                && x >= rect.left && x < rect.right && y >= rect.top && y < rect.bottom;
     }
 
     @Override
@@ -206,5 +252,10 @@ public class RelativeLayerView extends RelativeLayout {
     interface WindowCircleLinster {
         void onLayerAttached(RelativeLayerView view);
         void onLayerDetached(RelativeLayerView view);
+    }
+
+    interface LayerClickListener{
+        void onFullClick();
+        void onSingleClick(int id);
     }
 }

@@ -10,7 +10,6 @@ import android.view.View;
 
 public abstract class AbsGuideLayer {
     private ILayerCallback mCallback;
-    private Activity mActivity;
 
     public ILayerCallback getCallback() {
         return mCallback;
@@ -18,14 +17,6 @@ public abstract class AbsGuideLayer {
 
     public void setCallback(ILayerCallback callback) {
         mCallback = callback;
-    }
-
-    public Activity getActivity() {
-        return mActivity;
-    }
-
-    public void setActivity(Activity activity) {
-        mActivity = activity;
     }
 
     public abstract View makeView(Context context);

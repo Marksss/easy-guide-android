@@ -1,11 +1,11 @@
 package com.github.app.layer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.LayoutInflater;
-import android.view.View;
 
 import com.github.app.R;
 import com.github.easyguide.AbsGuideLayer;
@@ -17,23 +17,13 @@ import com.github.easyguide.RelativeGuideLayer;
  */
 
 public class MultiLayer1 extends RelativeGuideLayer {
+    public MultiLayer1(Activity activity) {
+        super(activity);
+    }
+
     @Override
     protected RelativeLayerView onCreateView(Context context){
-        return (RelativeLayerView) LayoutInflater.from(context).inflate(R.layout.leading_1, null);
-    }
-
-    @Override
-    public void onLayerAttached(final RelativeLayerView view) {
-        addTargetView(view, R.id.easy_guide_1);
-    }
-
-    @Override
-    public AbsGuideLayer nextLayer() {
-        return null;
-    }
-
-    @Override
-    public void onDraw(int id, Rect rect, Canvas canvas, Paint paint) {
-        super.onDraw(id, rect, canvas, paint);
+        addTargetView(R.id.easy_guide_1);
+        return (RelativeLayerView) LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null);
     }
 }
