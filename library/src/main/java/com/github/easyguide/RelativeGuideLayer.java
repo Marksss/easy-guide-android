@@ -8,9 +8,6 @@ import android.graphics.Rect;
 import android.util.SparseArray;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by shenxl on 2018/8/16.
  */
@@ -48,7 +45,7 @@ public class RelativeGuideLayer extends AbsGuideLayer
         view.post(new Runnable() {
             @Override
             public void run() {
-                addTargetView(view.getId(), ViewLocationUtils.getViewAbsRect(mActivity, view));
+                addTargetView(view.getId(), ViewLocUtils.getViewAbsRect(mActivity, view));
             }
         });
         return this;

@@ -5,9 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.github.app.layer.MultiLayer0;
 import com.github.easyguide.AbsGuideLayer;
-import com.github.easyguide.EasyGuideWindow;
+import com.github.easyguide.EasyGuideManager;
 import com.github.easyguide.RelativeGuideLayer;
 
 /**
@@ -24,7 +23,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AbsGuideLayer basicLayer = new RelativeGuideLayer(StartActivity.this).addTargetView(R.id.btn_basic_usage);
-                new EasyGuideWindow(StartActivity.this, basicLayer).show(getFragmentManager(), "");
+                new EasyGuideManager(StartActivity.this, basicLayer).addLayer();
             }
         });
 

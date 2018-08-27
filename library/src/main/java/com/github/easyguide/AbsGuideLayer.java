@@ -10,16 +10,24 @@ import android.view.View;
 
 public abstract class AbsGuideLayer {
     private ILayerCallback mCallback;
+    private View mView;
 
     public ILayerCallback getCallback() {
         return mCallback;
     }
 
-    public void setCallback(ILayerCallback callback) {
+    void setCallback(ILayerCallback callback) {
         mCallback = callback;
     }
 
-    public abstract View makeView(Context context);
+    View getView(Context context){
+        if (mView == null) {
+            mView = makeView(context);
+        }
+        return mView;
+    }
+
+    protected abstract View makeView(Context context);
 
     public abstract AbsGuideLayer nextLayer();
 
