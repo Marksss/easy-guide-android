@@ -30,7 +30,7 @@ public class EasyGuideManager implements AbsGuideLayer.ILayerCallback {
         return mGuideLayer;
     }
 
-    public void addLayer() {
+    public void showLayer() {
         if (mGuideLayer == null) {
             throw new IllegalArgumentException("the GuideLayer is null!");
         }
@@ -55,7 +55,7 @@ public class EasyGuideManager implements AbsGuideLayer.ILayerCallback {
             AbsGuideLayer nextLayer = mGuideLayer.nextLayer();
             if (nextLayer != null) {
                 mGuideLayer = nextLayer;
-                addLayer();
+                showLayer();
             }
             mParentView.removeView(preView);
         }

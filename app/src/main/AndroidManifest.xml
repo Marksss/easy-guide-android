@@ -21,6 +21,8 @@
         <activity android:name="com.github.app.MultiLayersActivity">
         </activity>
 
+        <activity android:name="com.github.app.RecyclerViewActivity">
+        </activity>
     </application>
 
 </manifest>

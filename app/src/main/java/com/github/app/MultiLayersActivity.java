@@ -9,6 +9,9 @@ import com.github.easyguide.EasyGuideManager;
 import com.github.easyguide.RelativeGuideLayer;
 import com.github.easyguide.RelativeLayerView;
 
+/**
+ * Created by shenxl on 2018/8/14.
+ */
 public class MultiLayersActivity extends AppCompatActivity {
 
     @Override
@@ -23,6 +26,6 @@ public class MultiLayersActivity extends AppCompatActivity {
                 callback.dismissCurrent();
             }
         });
-        new EasyGuideManager(MultiLayersActivity.this, layer).addLayer();
+        new EasyGuideManager(MultiLayersActivity.this, layer).showLayer();
     }
 }

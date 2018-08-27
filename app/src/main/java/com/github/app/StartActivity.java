@@ -23,7 +23,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AbsGuideLayer basicLayer = new RelativeGuideLayer(StartActivity.this).addTargetView(R.id.btn_basic_usage);
-                new EasyGuideManager(StartActivity.this, basicLayer).addLayer();
+                new EasyGuideManager(StartActivity.this, basicLayer).showLayer();
             }
         });
 
@@ -31,6 +31,13 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(StartActivity.this, MultiLayersActivity.class));
+            }
+        });
+
+        findViewById(R.id.btn_recyclerivew).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(StartActivity.this, RecyclerViewActivity.class));
             }
         });
     }
