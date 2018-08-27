@@ -32,10 +32,6 @@ public class EasyGuideWindow extends DialogFragment implements AbsGuideLayer.ILa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Window window = getDialog().getWindow();
-        if (window != null) {
-            window.setBackgroundDrawableResource(android.R.color.transparent);
-        }
         mParentView = new FrameLayout(mContext);
         mParentView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         return mParentView;
@@ -64,6 +60,7 @@ public class EasyGuideWindow extends DialogFragment implements AbsGuideLayer.ILa
             return;
         }
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        window.setBackgroundDrawableResource(android.R.color.transparent);
         show();
     }
 
@@ -73,9 +70,8 @@ public class EasyGuideWindow extends DialogFragment implements AbsGuideLayer.ILa
         if (nextLayer == null) {
             dismiss();
         } else {
-            View view = nextLayer.makeView(mContext);
-            mParentView.removeAllViews();
             mGuideLayer = nextLayer;
+            mParentView.removeAllViews();
             show();
         }
     }

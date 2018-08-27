@@ -26,7 +26,6 @@ public class RelativeLayerView extends RelativeLayout {
     private Paint mPaint;
     private boolean mHasMarginReset;
     private DrawCallBack mDrawCallBack;
-    private WindowCircleLinster mWindowCircleLinster;
     private LayerClickListener mLayerClickListener;
     private float mDownX, mDownY;
 
@@ -66,10 +65,6 @@ public class RelativeLayerView extends RelativeLayout {
         mDrawCallBack = drawCallBack;
     }
 
-    public void setWindowCircleLinster(WindowCircleLinster windowCircleLinster) {
-        mWindowCircleLinster = windowCircleLinster;
-    }
-
     public void setLayerClickListener(LayerClickListener layerClickListener) {
         mLayerClickListener = layerClickListener;
     }
@@ -79,22 +74,6 @@ public class RelativeLayerView extends RelativeLayout {
             mTargetRects.put(id, rect);
         } else {
             mTargetRects.put(mTargetRects.size(), rect);
-        }
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        if (mWindowCircleLinster != null) {
-            mWindowCircleLinster.onLayerAttached(this);
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (mWindowCircleLinster != null) {
-            mWindowCircleLinster.onLayerDetached(this);
         }
     }
 
@@ -150,7 +129,9 @@ public class RelativeLayerView extends RelativeLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
+        if (mTargetRects.size() > 0) {
+            super.onLayout(changed, l, t, r, b);
+        }
     }
 
     @Override
@@ -247,11 +228,6 @@ public class RelativeLayerView extends RelativeLayout {
 
     interface DrawCallBack{
         void onDraw(int id, Rect rect, Canvas canvas, Paint paint);
-    }
-
-    interface WindowCircleLinster {
-        void onLayerAttached(RelativeLayerView view);
-        void onLayerDetached(RelativeLayerView view);
     }
 
     interface LayerClickListener{

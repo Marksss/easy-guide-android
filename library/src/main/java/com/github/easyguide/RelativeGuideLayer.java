@@ -16,8 +16,7 @@ import java.util.List;
  */
 
 public class RelativeGuideLayer extends AbsGuideLayer
-        implements RelativeLayerView.DrawCallBack, RelativeLayerView.WindowCircleLinster,
-        RelativeLayerView.LayerClickListener{
+        implements RelativeLayerView.DrawCallBack, RelativeLayerView.LayerClickListener{
     private Activity mActivity;
     private RelativeLayerView mViewContainer;
     private SparseArray<Rect> mTargetCache = new SparseArray<>();
@@ -42,17 +41,23 @@ public class RelativeGuideLayer extends AbsGuideLayer
     }
 
     public RelativeGuideLayer addTargetView(int id){
-        return addTargetView(id, ViewLocationUtils.getViewAbsRect(mActivity, mActivity.findViewById(id)));
+        return addTargetView(mActivity.findViewById(id));
     }
 
-    public RelativeGuideLayer addTargetView(View view){
-        // TODO: 2018/8/24
-        return addTargetView(view.getId(), ViewLocationUtils.getViewAbsRect(mActivity, view));
+    public RelativeGuideLayer addTargetView(final View view){
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                addTargetView(view.getId(), ViewLocationUtils.getViewAbsRect(mActivity, view));
+            }
+        });
+        return this;
     }
 
     public RelativeGuideLayer addTargetView(int id, Rect rect) {
         if (mViewContainer != null) {
             mViewContainer.addTargetsRect(id, rect);
+            mViewContainer.requestLayout();
         } else {
             mTargetCache.put(id, rect);
         }
@@ -80,7 +85,6 @@ public class RelativeGuideLayer extends AbsGuideLayer
         mViewContainer = view;
 
         view.setDrawCallBack(this);
-        view.setWindowCircleLinster(this);
         view.setLayerClickListener(this);
         for (int i = 0; i < mTargetCache.size(); i++) {
             addTargetView(mTargetCache.keyAt(i), mTargetCache.valueAt(i));
@@ -92,16 +96,6 @@ public class RelativeGuideLayer extends AbsGuideLayer
     @Override
     public AbsGuideLayer nextLayer() {
         return mNextLayer;
-    }
-
-    @Override
-    public void onLayerAttached(RelativeLayerView view) {
-
-    }
-
-    @Override
-    public void onLayerDetached(RelativeLayerView view) {
-
     }
 
     @Override
