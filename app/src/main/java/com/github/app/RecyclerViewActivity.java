@@ -44,10 +44,10 @@ public class RecyclerViewActivity extends AppCompatActivity {
                     int targetPosition = 30;
                     if (firstVisibleItemPosition <= targetPosition
                             && targetPosition < lastVisibleItemPosition) {
-                        new EasyGuideManager(RecyclerViewActivity.this,
+                        EasyGuideManager.create(
                                 new RelativeGuideLayer(RecyclerViewActivity.this).
                                         addTargetView(mLayoutManager.findViewByPosition(targetPosition))
-                        ).showLayer();
+                        ).with(RecyclerViewActivity.this).showLayer();
                     }
                 }
             }
@@ -56,10 +56,10 @@ public class RecyclerViewActivity extends AppCompatActivity {
         recyclerView.post(new Runnable() {
             @Override
             public void run() {
-                new EasyGuideManager(RecyclerViewActivity.this,
+                EasyGuideManager.create(
                         new RelativeGuideLayer(RecyclerViewActivity.this).
                                 addTargetView(mLayoutManager.findViewByPosition(0))
-                ).showLayer();
+                ).with(RecyclerViewActivity.this).showLayer();
             }
         });
     }

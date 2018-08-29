@@ -23,6 +23,9 @@
 
         <activity android:name="com.github.app.RecyclerViewActivity">
         </activity>
+
+        <activity android:name="com.github.app.DialogActivity">
+        </activity>
     </application>
 
 </manifest>

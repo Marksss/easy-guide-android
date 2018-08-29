@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/dialog_top"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:gravity="center"
+        android:textSize="19sp"
+        android:text="This is a Dialog!!!"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/btn_left"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        app:layout_constraintTop_toBottomOf="@id/dialog_top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/btn_right"/>
+
+    <Button
+        android:id="@+id/btn_right"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        app:layout_constraintTop_toBottomOf="@id/dialog_top"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/btn_left"/>
+
+</android.support.constraint.ConstraintLayout>

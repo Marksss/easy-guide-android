@@ -26,6 +26,6 @@ public class MultiLayersActivity extends AppCompatActivity {
                 callback.dismissCurrent();
             }
         });
-        new EasyGuideManager(MultiLayersActivity.this, layer).showLayer();
+        EasyGuideManager.create(layer).with(MultiLayersActivity.this).showLayer();
     }
 }
