@@ -35,9 +35,9 @@ public class DialogActivity extends AppCompatActivity {
                 final View view = dialog.getWindow().getDecorView();
                 dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
-                    public void onShow(DialogInterface dialog) {
+                    public void onShow(DialogInterface dialogInterface) {
                         AbsGuideLayer basicLayer = new RelativeGuideLayer(DialogActivity.this).addTargetView(view1.findViewById(R.id.btn_left));
-                        EasyGuideManager.create(basicLayer).with(DialogActivity.this).showLayer();
+                        EasyGuideManager.create(basicLayer).with(dialog).showLayer();
                     }
                 });
                 dialog.show();

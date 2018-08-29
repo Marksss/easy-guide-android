@@ -20,8 +20,8 @@ import android.widget.RelativeLayout;
  */
 
 public class RelativeLayerView extends RelativeLayout {
-    public static final int DEFAULT_BACKGROUND_COLOR = 0xb3000000;
-    private static final Object FLAG_MASK = new Object();
+    private static final int DEFAULT_BASE_COLOR = 0x60000000;
+    private int mBaseColor = DEFAULT_BASE_COLOR;
     private SparseArray<Rect> mTargetRects = new SparseArray<>();
     private Paint mPaint;
     private boolean mHasMarginReset;
@@ -31,25 +31,34 @@ public class RelativeLayerView extends RelativeLayout {
 
     public RelativeLayerView(Context context) {
         super(context);
-        init();
+        init(null);
     }
 
     public RelativeLayerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
     public RelativeLayerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(attrs);
     }
 
     public RelativeLayerView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init();
+        init(attrs);
     }
 
-    private void init() {
+    private void init(AttributeSet attrs) {
+        if (attrs != null) {
+            TypedArray a = getContext().obtainStyledAttributes(attrs,R.styleable.RelativeLayerView);
+            try {
+                mBaseColor = a.getColor(R.styleable.RelativeLayerView_layer_base_color, DEFAULT_BASE_COLOR);
+            } finally {
+                a.recycle();
+            }
+        }
+
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         PorterDuffXfermode xfermode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
@@ -59,6 +68,10 @@ public class RelativeLayerView extends RelativeLayout {
         setLayerType(LAYER_TYPE_SOFTWARE, null);
 
         setWillNotDraw(false);
+    }
+
+    public void setBaseColor(int baseColor) {
+        mBaseColor = baseColor;
     }
 
     void setDrawCallBack(DrawCallBack drawCallBack) {
@@ -136,7 +149,7 @@ public class RelativeLayerView extends RelativeLayout {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        canvas.drawColor(DEFAULT_BACKGROUND_COLOR);
+        canvas.drawColor(mBaseColor);
         if (mDrawCallBack != null) {
             for (int i = 0; i < mTargetRects.size(); i++) {
                 mDrawCallBack.onDraw(mTargetRects.keyAt(i), mTargetRects.valueAt(i), canvas, mPaint);
