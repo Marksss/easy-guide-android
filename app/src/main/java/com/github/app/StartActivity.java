@@ -22,8 +22,14 @@ public class StartActivity extends AppCompatActivity {
         findViewById(R.id.btn_basic_usage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AbsGuideLayer basicLayer = new RelativeGuideLayer(StartActivity.this).addTargetView(R.id.btn_basic_usage);
-                EasyGuideManager.create(basicLayer).with(StartActivity.this).showLayer();
+
+                /*   EasyGuide starts  */
+                EasyGuideManager.create(
+                        new RelativeGuideLayer(StartActivity.this).
+                                addTargetView(R.id.btn_basic_usage)
+                ).with(StartActivity.this).showLayer();
+                /*   EasyGuide ends  */
+
             }
         });
 

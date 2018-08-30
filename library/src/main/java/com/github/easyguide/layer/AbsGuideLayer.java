@@ -11,15 +11,15 @@ public abstract class AbsGuideLayer {
     private ILayerCallback mCallback;
     private View mView;
 
-    public ILayerCallback getCallback() {
+    public final ILayerCallback getCallback() {
         return mCallback;
     }
 
-    public void setCallback(ILayerCallback callback) {
+    public final void setCallback(ILayerCallback callback) {
         mCallback = callback;
     }
 
-    public View getView(Context context){
+    public final View getView(Context context){
         if (mView == null) {
             mView = makeView(context);
         }

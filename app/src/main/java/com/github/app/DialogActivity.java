@@ -34,14 +34,19 @@ public class DialogActivity extends AppCompatActivity {
                 dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface dialogInterface) {
+
+                        /*   EasyGuide starts  */
                         AbsGuideLayer basicLayer = new RelativeGuideLayer(DialogActivity.this).addTargetView(view1.findViewById(R.id.dialog_top));
                         mEasyGuideManager = EasyGuideManager.create(basicLayer).with(dialog);
                         mEasyGuideManager.showLayer();
+                        /*   EasyGuide ends  */
+
                     }
                 });
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
+                        // This is strongly recommended in case of memory leak
                         if (mEasyGuideManager != null){
                             mEasyGuideManager.dismissAll();
                         }

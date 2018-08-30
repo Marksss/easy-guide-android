@@ -15,14 +15,13 @@ import com.github.easyguide.layer.AbsGuideLayer;
  */
 
 public class EasyGuideManager implements IGuideAction {
-    private Context mContext;
     private FrameLayout mParentView;
     private AbsGuideLayer mGuideLayer;
     private IGuideAction mGuideClient;
     
     public static EasyGuideManager create(AbsGuideLayer guideLayer) {
         if (guideLayer == null) {
-            throw new IllegalArgumentException("GuideLayer is null!");
+            throw new IllegalArgumentException("GuideLayer must not be null");
         }
         return new EasyGuideManager(guideLayer);
     }
@@ -32,28 +31,25 @@ public class EasyGuideManager implements IGuideAction {
     }
 
     public EasyGuideManager with(FrameLayout parentView) {
-        this.mContext = parentView.getContext();
         this.mParentView = parentView;
         this.mGuideClient = new CommonGuideClient(this);
         return this;
     }
     
     public EasyGuideManager with(Activity activity) {
-        this.mContext = activity;
         this.mParentView = (FrameLayout) activity.getWindow().getDecorView();
         this.mGuideClient = new CommonGuideClient(this);
         return this;
     }
 
     public EasyGuideManager with(Dialog dialog) {
-        this.mContext = dialog.getContext();
-        this.mParentView = new FrameLayout(mContext);
+        this.mParentView = new FrameLayout(dialog.getContext());
         this.mGuideClient = new DialogGuideDecorator(this, new CommonGuideClient(this), dialog);
         return this;
     }
 
     public Context getContext() {
-        return mContext;
+        return mParentView.getContext();
     }
 
     public FrameLayout getParentView() {
@@ -64,10 +60,18 @@ public class EasyGuideManager implements IGuideAction {
         return mGuideLayer;
     }
 
+    public AbsGuideLayer getNextLayer() {
+        return mGuideLayer.nextLayer();
+    }
+
+    public void stepNext() {
+        mGuideLayer = mGuideLayer.nextLayer();
+    }
+
     @Override
     public void showLayer() {
-        if (mParentView == null || mContext == null) {
-            throw new IllegalArgumentException("Context or parentView is null! Did you call the method with()?");
+        if (mParentView == null) {
+            throw new IllegalArgumentException("ParentView is null! Did you call the method with()?");
         }
         mGuideLayer.setCallback(this);
         mGuideClient.showLayer();

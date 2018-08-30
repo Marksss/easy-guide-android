@@ -37,11 +37,11 @@ public class RelativeGuideLayer extends AbsGuideLayer
         return mViewContainer;
     }
 
-    public RelativeGuideLayer addTargetView(int id){
+    public final RelativeGuideLayer addTargetView(int id){
         return addTargetView(mActivity.findViewById(id));
     }
 
-    public RelativeGuideLayer addTargetView(final View view){
+    public final RelativeGuideLayer addTargetView(final View view){
         view.post(new Runnable() {
             @Override
             public void run() {
@@ -51,7 +51,7 @@ public class RelativeGuideLayer extends AbsGuideLayer
         return this;
     }
 
-    public RelativeGuideLayer addTargetView(int id, Rect rect) {
+    public final RelativeGuideLayer addTargetView(int id, Rect rect) {
         if (mViewContainer != null) {
             mViewContainer.addTargetsRect(id, rect);
             mViewContainer.requestLayout();
@@ -91,7 +91,7 @@ public class RelativeGuideLayer extends AbsGuideLayer
     }
 
     @Override
-    public AbsGuideLayer nextLayer() {
+    public final AbsGuideLayer nextLayer() {
         return mNextLayer;
     }
 
@@ -100,12 +100,12 @@ public class RelativeGuideLayer extends AbsGuideLayer
         drawRect(rect, canvas, paint);
     }
 
-    protected void drawRect(Rect rect, Canvas canvas, Paint paint){
+    protected final void drawRect(Rect rect, Canvas canvas, Paint paint){
         canvas.drawRect(rect, paint);
     }
 
     @Override
-    public void onFullClick() {
+    public final void onFullClick() {
         if (mSingleClickListener == null) {
             if (mFullClickListener == null) {
                 getCallback().dismissCurrent();
@@ -116,7 +116,7 @@ public class RelativeGuideLayer extends AbsGuideLayer
     }
 
     @Override
-    public void onSingleClick(int id) {
+    public final void onSingleClick(int id) {
         if (mSingleClickListener != null) {
             mSingleClickListener.onClick(id, mViewContainer, getCallback());
         }

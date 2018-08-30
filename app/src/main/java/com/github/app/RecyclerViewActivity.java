@@ -44,10 +44,13 @@ public class RecyclerViewActivity extends AppCompatActivity {
                     int targetPosition = 30;
                     if (firstVisibleItemPosition <= targetPosition
                             && targetPosition < lastVisibleItemPosition) {
+
+                        /*   EasyGuide starts  */
                         EasyGuideManager.create(
                                 new RelativeGuideLayer(RecyclerViewActivity.this).
                                         addTargetView(mLayoutManager.findViewByPosition(targetPosition))
                         ).with(RecyclerViewActivity.this).showLayer();
+                        /*   EasyGuide ends  */
                     }
                 }
             }
@@ -56,10 +59,13 @@ public class RecyclerViewActivity extends AppCompatActivity {
         recyclerView.post(new Runnable() {
             @Override
             public void run() {
+
+                /*   EasyGuide starts  */
                 EasyGuideManager.create(
                         new RelativeGuideLayer(RecyclerViewActivity.this).
                                 addTargetView(mLayoutManager.findViewByPosition(0))
                 ).with(RecyclerViewActivity.this).showLayer();
+                /*   EasyGuide ends  */
             }
         });
     }
