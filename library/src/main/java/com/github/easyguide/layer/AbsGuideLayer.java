@@ -1,6 +1,5 @@
-package com.github.easyguide;
+package com.github.easyguide.layer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
@@ -16,11 +15,11 @@ public abstract class AbsGuideLayer {
         return mCallback;
     }
 
-    void setCallback(ILayerCallback callback) {
+    public void setCallback(ILayerCallback callback) {
         mCallback = callback;
     }
 
-    View getView(Context context){
+    public View getView(Context context){
         if (mView == null) {
             mView = makeView(context);
         }

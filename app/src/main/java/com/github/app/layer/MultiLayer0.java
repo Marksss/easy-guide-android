@@ -5,9 +5,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 
 import com.github.app.R;
-import com.github.easyguide.AbsGuideLayer;
-import com.github.easyguide.RelativeLayerView;
-import com.github.easyguide.RelativeGuideLayer;
+import com.github.easyguide.layer.AbsGuideLayer;
+import com.github.easyguide.layer.RelativeLayerView;
+import com.github.easyguide.layer.RelativeGuideLayer;
 
 /**
  * Created by shenxl on 2018/8/16.

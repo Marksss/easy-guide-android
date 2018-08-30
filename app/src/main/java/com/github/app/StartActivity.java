@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.github.easyguide.AbsGuideLayer;
+import com.github.easyguide.layer.AbsGuideLayer;
 import com.github.easyguide.EasyGuideManager;
-import com.github.easyguide.RelativeGuideLayer;
+import com.github.easyguide.layer.RelativeGuideLayer;
 
 /**
  * Created by shenxl on 2018/8/23.

@@ -1,4 +1,4 @@
-package com.github.easyguide;
+package com.github.easyguide.layer;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
+import com.github.easyguide.R;
 
 /**
  * Created by shenxl on 2018/8/16.
@@ -51,7 +53,7 @@ public class RelativeLayerView extends RelativeLayout {
 
     private void init(AttributeSet attrs) {
         if (attrs != null) {
-            TypedArray a = getContext().obtainStyledAttributes(attrs,R.styleable.RelativeLayerView);
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.RelativeLayerView);
             try {
                 mBaseColor = a.getColor(R.styleable.RelativeLayerView_layer_base_color, DEFAULT_BASE_COLOR);
             } finally {

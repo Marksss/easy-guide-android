@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.github.easyguide.RelativeLayerView
+<com.github.easyguide.layer.RelativeLayerView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
@@ -25,4 +25,4 @@
         app:target_alignRight="@+id/easy_guide_1"
         app:target_above="@+id/easy_guide_1"/>
 
-</com.github.easyguide.RelativeLayerView>
+</com.github.easyguide.layer.RelativeLayerView>

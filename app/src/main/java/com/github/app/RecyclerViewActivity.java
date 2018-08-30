@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.github.easyguide.EasyGuideManager;
-import com.github.easyguide.RelativeGuideLayer;
+import com.github.easyguide.layer.RelativeGuideLayer;
 
 import java.util.ArrayList;
 import java.util.List;

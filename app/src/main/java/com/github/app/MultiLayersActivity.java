@@ -4,10 +4,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.github.app.layer.MultiLayer0;
-import com.github.easyguide.AbsGuideLayer;
+import com.github.easyguide.layer.AbsGuideLayer;
 import com.github.easyguide.EasyGuideManager;
-import com.github.easyguide.RelativeGuideLayer;
-import com.github.easyguide.RelativeLayerView;
+import com.github.easyguide.layer.RelativeGuideLayer;
+import com.github.easyguide.layer.RelativeLayerView;
 
 /**
  * Created by shenxl on 2018/8/14.

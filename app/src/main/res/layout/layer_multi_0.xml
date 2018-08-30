@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.github.easyguide.RelativeLayerView
+<com.github.easyguide.layer.RelativeLayerView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
@@ -46,4 +46,4 @@
         android:textColor="#ff6c00"
         android:text="this is guide 2"/>
 
-</com.github.easyguide.RelativeLayerView>
+</com.github.easyguide.layer.RelativeLayerView>
