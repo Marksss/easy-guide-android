@@ -6,8 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
-import com.github.easyguide.layer.AbsGuideLayer;
+import com.github.easyguide.AbsGuideLayer;
 import com.github.easyguide.EasyGuideManager;
+import com.github.easyguide.layer.ILayerCallback;
 import com.github.easyguide.layer.RelativeGuideLayer;
 import com.github.easyguide.layer.RelativeLayerView;
 
@@ -25,12 +26,15 @@ public class MultiLayersActivity extends AppCompatActivity {
         MultiLayer0 layer = new MultiLayer0(MultiLayersActivity.this);
         layer.setSingleClickListener(new RelativeGuideLayer.onSingleClickListener() {
             @Override
-            public void onClick(int id, RelativeLayerView container, AbsGuideLayer.ILayerCallback callback) {
+            public void onClick(int id, RelativeLayerView container, ILayerCallback callback) {
                 callback.dismissCurrent();
             }
         });
-        layer.setNextLayer(new MultiLayer1(MultiLayersActivity.this));
-        EasyGuideManager.create(layer).with(MultiLayersActivity.this).showLayer();
+        EasyGuideManager.
+                with(MultiLayersActivity.this).
+                addLayer(layer).
+                addLayer(new MultiLayer1(MultiLayersActivity.this)).
+                showLayer();
         /*   EasyGuide ends  */
     }
 

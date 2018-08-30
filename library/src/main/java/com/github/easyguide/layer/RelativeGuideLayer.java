@@ -8,6 +8,8 @@ import android.graphics.Rect;
 import android.util.SparseArray;
 import android.view.View;
 
+import com.github.easyguide.AbsGuideLayer;
+
 /**
  * Created by shenxl on 2018/8/16.
  */
@@ -19,7 +21,6 @@ public class RelativeGuideLayer extends AbsGuideLayer
     private SparseArray<Rect> mTargetCache = new SparseArray<>();
     private onFullClickListener mFullClickListener;
     private onSingleClickListener mSingleClickListener;
-    private AbsGuideLayer mNextLayer;
 
     public RelativeGuideLayer(Activity activity) {
         mActivity = activity;
@@ -69,10 +70,6 @@ public class RelativeGuideLayer extends AbsGuideLayer
         mSingleClickListener = singleClickListener;
     }
 
-    public void setNextLayer(AbsGuideLayer nextLayer) {
-        mNextLayer = nextLayer;
-    }
-
     @Override
     public final View makeView(Context context) {
         RelativeLayerView view = onCreateView(context);
@@ -88,11 +85,6 @@ public class RelativeGuideLayer extends AbsGuideLayer
         }
 
         return view;
-    }
-
-    @Override
-    public final AbsGuideLayer nextLayer() {
-        return mNextLayer;
     }
 
     @Override

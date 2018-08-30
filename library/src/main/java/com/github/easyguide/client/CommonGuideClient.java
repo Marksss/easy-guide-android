@@ -1,11 +1,9 @@
 package com.github.easyguide.client;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.github.easyguide.EasyGuideManager;
-import com.github.easyguide.layer.AbsGuideLayer;
 
 /**
  * Created by shenxl on 2018/8/29.
@@ -33,7 +31,7 @@ public class CommonGuideClient implements IGuideAction {
     @Override
     public void dismissCurrent() {
         View preView = mManager.getCurrentLayer().getView(mManager.getContext());
-        if (mManager.getNextLayer() != null) {
+        if (mManager.hasNextLayer()) {
             mManager.stepNext();
             mManager.showLayer();
         }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.github.easyguide.layer.AbsGuideLayer;
 import com.github.easyguide.EasyGuideManager;
 import com.github.easyguide.layer.RelativeGuideLayer;
 
@@ -24,10 +23,12 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 /*   EasyGuide starts  */
-                EasyGuideManager.create(
-                        new RelativeGuideLayer(StartActivity.this).
-                                addTargetView(R.id.btn_basic_usage)
-                ).with(StartActivity.this).showLayer();
+                EasyGuideManager.
+                        with(StartActivity.this).
+                        addLayer(
+                                new RelativeGuideLayer(StartActivity.this).
+                                        addTargetView(R.id.btn_basic_usage)
+                        ).showLayer();
                 /*   EasyGuide ends  */
 
             }

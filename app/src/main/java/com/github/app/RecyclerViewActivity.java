@@ -46,10 +46,12 @@ public class RecyclerViewActivity extends AppCompatActivity {
                             && targetPosition < lastVisibleItemPosition) {
 
                         /*   EasyGuide starts  */
-                        EasyGuideManager.create(
-                                new RelativeGuideLayer(RecyclerViewActivity.this).
-                                        addTargetView(mLayoutManager.findViewByPosition(targetPosition))
-                        ).with(RecyclerViewActivity.this).showLayer();
+                        EasyGuideManager.
+                                with(RecyclerViewActivity.this).
+                                addLayer(
+                                        new RelativeGuideLayer(RecyclerViewActivity.this).
+                                                addTargetView(mLayoutManager.findViewByPosition(targetPosition))
+                                ).showLayer();
                         /*   EasyGuide ends  */
                     }
                 }
@@ -61,10 +63,12 @@ public class RecyclerViewActivity extends AppCompatActivity {
             public void run() {
 
                 /*   EasyGuide starts  */
-                EasyGuideManager.create(
-                        new RelativeGuideLayer(RecyclerViewActivity.this).
-                                addTargetView(mLayoutManager.findViewByPosition(0))
-                ).with(RecyclerViewActivity.this).showLayer();
+                EasyGuideManager.
+                        with(RecyclerViewActivity.this).
+                        addLayer(
+                                new RelativeGuideLayer(RecyclerViewActivity.this).
+                                        addTargetView(mLayoutManager.findViewByPosition(0))
+                        ).showLayer();
                 /*   EasyGuide ends  */
             }
         });

@@ -1,7 +1,9 @@
-package com.github.easyguide.layer;
+package com.github.easyguide;
 
 import android.content.Context;
 import android.view.View;
+
+import com.github.easyguide.layer.ILayerCallback;
 
 /**
  * Created by shenxl on 2018/8/16.
@@ -15,7 +17,7 @@ public abstract class AbsGuideLayer {
         return mCallback;
     }
 
-    public final void setCallback(ILayerCallback callback) {
+    void setCallback(ILayerCallback callback) {
         mCallback = callback;
     }
 
@@ -27,11 +29,4 @@ public abstract class AbsGuideLayer {
     }
 
     protected abstract View makeView(Context context);
-
-    public abstract AbsGuideLayer nextLayer();
-
-    public interface ILayerCallback {
-        void dismissCurrent();
-        void dismissAll();
-    }
 }

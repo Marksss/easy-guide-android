@@ -6,46 +6,51 @@ import android.content.Context;
 import android.widget.FrameLayout;
 
 import com.github.easyguide.client.CommonGuideClient;
-import com.github.easyguide.client.DialogGuideDecorator;
+import com.github.easyguide.client.DialogGuideClient;
 import com.github.easyguide.client.IGuideAction;
-import com.github.easyguide.layer.AbsGuideLayer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by shenxl on 2018/8/16.
  */
 
 public class EasyGuideManager implements IGuideAction {
+    private List<AbsGuideLayer> mGuideLayers = new ArrayList<>();
+    private int mLayerIndex = 0;
     private FrameLayout mParentView;
-    private AbsGuideLayer mGuideLayer;
     private IGuideAction mGuideClient;
-    
-    public static EasyGuideManager create(AbsGuideLayer guideLayer) {
-        if (guideLayer == null) {
-            throw new IllegalArgumentException("GuideLayer must not be null");
-        }
-        return new EasyGuideManager(guideLayer);
+
+    public EasyGuideManager(FrameLayout parentView) {
+        mParentView = parentView;
     }
 
-    private EasyGuideManager(AbsGuideLayer guideLayer) {
-        this.mGuideLayer = guideLayer;
-    }
-
-    public EasyGuideManager with(FrameLayout parentView) {
-        this.mParentView = parentView;
-        this.mGuideClient = new CommonGuideClient(this);
-        return this;
+    public static EasyGuideManager with(FrameLayout parentView) {
+        EasyGuideManager manager = new EasyGuideManager(parentView);
+        manager.setGuideClient(new CommonGuideClient(manager));
+        return manager;
     }
     
-    public EasyGuideManager with(Activity activity) {
-        this.mParentView = (FrameLayout) activity.getWindow().getDecorView();
-        this.mGuideClient = new CommonGuideClient(this);
+    public static EasyGuideManager with(Activity activity) {
+        EasyGuideManager manager = new EasyGuideManager((FrameLayout) activity.getWindow().getDecorView());
+        manager.setGuideClient(new CommonGuideClient(manager));
+        return manager;
+    }
+
+    public static EasyGuideManager with(Dialog dialog) {
+        EasyGuideManager manager = new EasyGuideManager(new FrameLayout(dialog.getContext()));
+        manager.setGuideClient(new DialogGuideClient(manager, dialog));
+        return manager;
+    }
+
+    public EasyGuideManager addLayer(AbsGuideLayer layer){
+        mGuideLayers.add(layer);
         return this;
     }
 
-    public EasyGuideManager with(Dialog dialog) {
-        this.mParentView = new FrameLayout(dialog.getContext());
-        this.mGuideClient = new DialogGuideDecorator(this, new CommonGuideClient(this), dialog);
-        return this;
+    private void setGuideClient(IGuideAction guideClient) {
+        mGuideClient = guideClient;
     }
 
     public Context getContext() {
@@ -57,23 +62,26 @@ public class EasyGuideManager implements IGuideAction {
     }
 
     public AbsGuideLayer getCurrentLayer() {
-        return mGuideLayer;
+        return mGuideLayers.get(mLayerIndex);
     }
 
-    public AbsGuideLayer getNextLayer() {
-        return mGuideLayer.nextLayer();
+    public boolean hasNextLayer() {
+        return mLayerIndex < mGuideLayers.size() - 1;
     }
 
     public void stepNext() {
-        mGuideLayer = mGuideLayer.nextLayer();
+        mLayerIndex++;
     }
 
     @Override
     public void showLayer() {
+        if (mGuideLayers.isEmpty()) {
+            throw new IllegalArgumentException("GuideLayer must not be null");
+        }
         if (mParentView == null) {
             throw new IllegalArgumentException("ParentView is null! Did you call the method with()?");
         }
-        mGuideLayer.setCallback(this);
+        getCurrentLayer().setCallback(this);
         mGuideClient.showLayer();
     }
 
