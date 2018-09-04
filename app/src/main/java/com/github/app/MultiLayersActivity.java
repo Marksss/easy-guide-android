@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
-import com.github.easyguide.AbsGuideLayer;
 import com.github.easyguide.EasyGuideManager;
 import com.github.easyguide.layer.ILayerCallback;
 import com.github.easyguide.layer.RelativeGuideLayer;
@@ -34,7 +33,7 @@ public class MultiLayersActivity extends AppCompatActivity {
                 with(MultiLayersActivity.this).
                 addLayer(layer).
                 addLayer(new MultiLayer1(MultiLayersActivity.this)).
-                showLayer();
+                show();
         /*   EasyGuide ends  */
     }
 

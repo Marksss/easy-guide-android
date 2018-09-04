@@ -8,21 +8,14 @@ import com.github.easyguide.EasyGuideManager;
 /**
  * Created by shenxl on 2018/8/29.
  */
-public class CommonGuideClient implements IGuideAction {
-    EasyGuideManager mManager;
-    FrameLayout mParentView;
-
-    public CommonGuideClient(EasyGuideManager manager) {
-        this.mManager = manager;
-        this.mParentView = manager.getParentView();
-    }
+public class CommonGuideClient extends AbsGuideClient {
 
     @Override
-    public void showLayer() {
+    public void show() {
         mParentView.post(new Runnable() {
             @Override
             public void run() {
-                mParentView.addView(mManager.getCurrentLayer().getView(mManager.getContext()),
+                mParentView.addView(mLayerChain.getCurrentLayer().getView(mContext),
                         new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
             }
         });
@@ -30,16 +23,16 @@ public class CommonGuideClient implements IGuideAction {
 
     @Override
     public void dismissCurrent() {
-        View preView = mManager.getCurrentLayer().getView(mManager.getContext());
-        if (mManager.hasNextLayer()) {
-            mManager.stepNext();
-            mManager.showLayer();
+        View preView = mLayerChain.getCurrentLayer().getView(mContext);
+        if (mLayerChain.hasNextLayer()) {
+            mLayerChain.stepNext();
+            this.show();
         }
         mParentView.removeView(preView);
     }
 
     @Override
     public void dismissAll() {
-        mParentView.removeView(mManager.getCurrentLayer().getView(mManager.getContext()));
+        mParentView.removeView(mLayerChain.getCurrentLayer().getView(mContext));
     }
 }

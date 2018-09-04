@@ -28,7 +28,7 @@ public class StartActivity extends AppCompatActivity {
                         addLayer(
                                 new RelativeGuideLayer(StartActivity.this).
                                         addTargetView(R.id.btn_basic_usage)
-                        ).showLayer();
+                        ).show();
                 /*   EasyGuide ends  */
 
             }

@@ -30,7 +30,6 @@ public class DialogActivity extends AppCompatActivity {
                         .create();
                 dialog.setTitle("This is dialog");
                 dialog.setView(view1);
-                final View view = dialog.getWindow().getDecorView();
                 dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface dialogInterface) {
@@ -38,7 +37,7 @@ public class DialogActivity extends AppCompatActivity {
                         /*   EasyGuide starts  */
                         AbsGuideLayer basicLayer = new RelativeGuideLayer(DialogActivity.this).addTargetView(view1.findViewById(R.id.dialog_top));
                         mEasyGuideManager = EasyGuideManager.with(dialog).addLayer(basicLayer);
-                        mEasyGuideManager.showLayer();
+                        mEasyGuideManager.show();
                         /*   EasyGuide ends  */
 
                     }

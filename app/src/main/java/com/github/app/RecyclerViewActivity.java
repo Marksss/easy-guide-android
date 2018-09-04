@@ -51,7 +51,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
                                 addLayer(
                                         new RelativeGuideLayer(RecyclerViewActivity.this).
                                                 addTargetView(mLayoutManager.findViewByPosition(targetPosition))
-                                ).showLayer();
+                                ).show();
                         /*   EasyGuide ends  */
                     }
                 }
@@ -68,7 +68,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
                         addLayer(
                                 new RelativeGuideLayer(RecyclerViewActivity.this).
                                         addTargetView(mLayoutManager.findViewByPosition(0))
-                        ).showLayer();
+                        ).show();
                 /*   EasyGuide ends  */
             }
         });
