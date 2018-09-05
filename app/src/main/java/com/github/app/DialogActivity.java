@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.github.easyguide.AbsGuideLayer;
+import com.github.easyguide.layer.AbsGuideLayer;
 import com.github.easyguide.EasyGuideManager;
 import com.github.easyguide.layer.RelativeGuideLayer;
 

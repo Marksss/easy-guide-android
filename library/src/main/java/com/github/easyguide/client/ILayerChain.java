@@ -1,6 +1,6 @@
 package com.github.easyguide.client;
 
-import com.github.easyguide.AbsGuideLayer;
+import com.github.easyguide.layer.AbsGuideLayer;
 
 /**
  * Created by shenxl on 2018/9/3.

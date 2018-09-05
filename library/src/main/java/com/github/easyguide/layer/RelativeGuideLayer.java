@@ -8,8 +8,6 @@ import android.graphics.Rect;
 import android.util.SparseArray;
 import android.view.View;
 
-import com.github.easyguide.AbsGuideLayer;
-
 /**
  * Created by shenxl on 2018/8/16.
  */
@@ -89,10 +87,6 @@ public class RelativeGuideLayer extends AbsGuideLayer
 
     @Override
     public void onDraw(int id, Rect rect, Canvas canvas, Paint paint){
-        drawRect(rect, canvas, paint);
-    }
-
-    protected final void drawRect(Rect rect, Canvas canvas, Paint paint){
         canvas.drawRect(rect, paint);
     }
 

@@ -17,12 +17,14 @@ public class CommonGuideClient extends AbsGuideClient {
             public void run() {
                 mParentView.addView(mLayerChain.getCurrentLayer().getView(mContext),
                         new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+                mLayerChain.getCurrentLayer().onShow();
             }
         });
     }
 
     @Override
     public void dismissCurrent() {
+        mLayerChain.getCurrentLayer().onDismiss();
         View preView = mLayerChain.getCurrentLayer().getView(mContext);
         if (mLayerChain.hasNextLayer()) {
             mLayerChain.stepNext();
@@ -33,6 +35,7 @@ public class CommonGuideClient extends AbsGuideClient {
 
     @Override
     public void dismissAll() {
+        mLayerChain.getCurrentLayer().onDismiss();
         mParentView.removeView(mLayerChain.getCurrentLayer().getView(mContext));
     }
 }

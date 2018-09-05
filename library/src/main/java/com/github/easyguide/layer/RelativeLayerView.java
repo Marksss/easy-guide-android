@@ -26,6 +26,7 @@ public class RelativeLayerView extends RelativeLayout {
     private int mBaseColor = DEFAULT_BASE_COLOR;
     private SparseArray<Rect> mTargetRects = new SparseArray<>();
     private Paint mPaint;
+    private PorterDuffXfermode mXfermode;
     private boolean mHasMarginReset;
     private DrawCallBack mDrawCallBack;
     private LayerClickListener mLayerClickListener;
@@ -62,14 +63,8 @@ public class RelativeLayerView extends RelativeLayout {
         }
 
         mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        PorterDuffXfermode xfermode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
-        mPaint.setXfermode(xfermode);
-
-        mPaint.setMaskFilter(new BlurMaskFilter(10, BlurMaskFilter.Blur.INNER));
+        mXfermode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
-
-        setWillNotDraw(false);
     }
 
     public void setBaseColor(int baseColor) {
@@ -102,35 +97,35 @@ public class RelativeLayerView extends RelativeLayout {
             for (int i = 0; i < getChildCount(); i++){
                 View child = getChildAt(i);
                 LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
-                if (layoutParams.mTargetAbove != NO_ID) {
+                if (layoutParams.mTargetAbove != NO_ID && mTargetRects.get(layoutParams.mTargetAbove) != null) {
                     layoutParams.bottomMargin += totalHeight - mTargetRects.get(layoutParams.mTargetAbove).top;
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 }
-                if (layoutParams.mTargetBelow != NO_ID) {
+                if (layoutParams.mTargetBelow != NO_ID && mTargetRects.get(layoutParams.mTargetBelow) != null) {
                     layoutParams.topMargin += mTargetRects.get(layoutParams.mTargetBelow).bottom;
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
                 }
-                if (layoutParams.mTargetToLeft != NO_ID) {
+                if (layoutParams.mTargetToLeft != NO_ID && mTargetRects.get(layoutParams.mTargetToLeft) != null) {
                     layoutParams.rightMargin += totalWidth - mTargetRects.get(layoutParams.mTargetToLeft).left;
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 }
-                if (layoutParams.mTargetToRight != NO_ID) {
+                if (layoutParams.mTargetToRight != NO_ID && mTargetRects.get(layoutParams.mTargetToRight) != null) {
                     layoutParams.leftMargin += mTargetRects.get(layoutParams.mTargetToRight).right;
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 }
-                if (layoutParams.mTargetAlignTop != NO_ID) {
+                if (layoutParams.mTargetAlignTop != NO_ID && mTargetRects.get(layoutParams.mTargetAlignTop) != null) {
                     layoutParams.topMargin += mTargetRects.get(layoutParams.mTargetAlignTop).top;
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
                 }
-                if (layoutParams.mTargetAlignBottom != NO_ID) {
+                if (layoutParams.mTargetAlignBottom != NO_ID && mTargetRects.get(layoutParams.mTargetAlignBottom) != null) {
                     layoutParams.bottomMargin += totalHeight - mTargetRects.get(layoutParams.mTargetAlignBottom).bottom;
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 }
-                if (layoutParams.mTargetAlignLeft != NO_ID) {
+                if (layoutParams.mTargetAlignLeft != NO_ID && mTargetRects.get(layoutParams.mTargetAlignLeft) != null) {
                     layoutParams.leftMargin += mTargetRects.get(layoutParams.mTargetAlignLeft).left;
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 }
-                if (layoutParams.mTargetAlignRight != NO_ID) {
+                if (layoutParams.mTargetAlignRight != NO_ID && mTargetRects.get(layoutParams.mTargetAlignRight) != null) {
                     layoutParams.rightMargin += totalWidth - mTargetRects.get(layoutParams.mTargetAlignRight).right;
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 }
@@ -152,6 +147,9 @@ public class RelativeLayerView extends RelativeLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         canvas.drawColor(mBaseColor);
+        mPaint.reset();
+        mPaint.setAntiAlias(true);
+        mPaint.setXfermode(mXfermode);
         if (mDrawCallBack != null) {
             for (int i = 0; i < mTargetRects.size(); i++) {
                 mDrawCallBack.onDraw(mTargetRects.keyAt(i), mTargetRects.valueAt(i), canvas, mPaint);

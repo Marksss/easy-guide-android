@@ -2,6 +2,14 @@ package com.github.app;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,6 +41,7 @@ public class MultiLayersActivity extends AppCompatActivity {
                 with(MultiLayersActivity.this).
                 addLayer(layer).
                 addLayer(new MultiLayer1(MultiLayersActivity.this)).
+                addLayer(new MultiLayer2(MultiLayersActivity.this)).
                 show();
         /*   EasyGuide ends  */
     }
@@ -45,9 +54,14 @@ public class MultiLayersActivity extends AppCompatActivity {
 
         @Override
         protected RelativeLayerView onCreateView(Context context){
-            addTargetView(R.id.easy_guide_0);
-            addTargetView(R.id.easy_guide_2);
+            addTargetView(R.id.multi_guide_0);
+            addTargetView(R.id.multi_guide_1);
             return (RelativeLayerView) LayoutInflater.from(context).inflate(R.layout.layer_multi_0, null);
+        }
+
+        @Override
+        public void onDraw(int id, Rect rect, Canvas canvas, Paint paint) {
+            canvas.drawRoundRect(new RectF(rect), 10, 10, paint);
         }
     }
 
@@ -58,8 +72,36 @@ public class MultiLayersActivity extends AppCompatActivity {
 
         @Override
         protected RelativeLayerView onCreateView(Context context){
-            addTargetView(R.id.easy_guide_1);
+            addTargetView(R.id.multi_guide_circle);
             return (RelativeLayerView) LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null);
+        }
+
+        @Override
+        public void onDraw(int id, Rect rect, Canvas canvas, Paint paint) {
+            float cx = (rect.left + rect.right)/2;
+            float cy = (rect.top + rect.bottom)/2;
+            float radius = Math.max((rect.right - rect.left)/2, (rect.bottom - rect.top)/2) + 10;
+            canvas.drawCircle(cx, cy, radius, paint);
+        }
+    }
+
+    public class MultiLayer2 extends RelativeGuideLayer {
+        public MultiLayer2(Activity activity) {
+            super(activity);
+            addTargetView(R.id.multi_guide_ladder);
+        }
+
+        @Override
+        public void onDraw(int id, Rect rect, Canvas canvas, Paint paint) {
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
+            final Bitmap bitmap = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.ladder);
+            canvas.drawBitmap(bitmap, null, new RectF(rect), paint);
+            setOnDismissListener(new onDismissListener() {
+                @Override
+                public void onDismiss() {
+                    bitmap.recycle();
+                }
+            });
         }
     }
 }

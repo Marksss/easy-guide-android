@@ -22,7 +22,7 @@
         android:layout_marginBottom="15dp"
         android:layout_alignParentBottom="true"
         android:src="@drawable/arrow_yellow_down"
-        app:target_alignRight="@+id/easy_guide_1"
-        app:target_above="@+id/easy_guide_1"/>
+        app:target_alignRight="@+id/multi_guide_circle"
+        app:target_above="@+id/multi_guide_circle"/>
 
 </com.github.easyguide.layer.RelativeLayerView>

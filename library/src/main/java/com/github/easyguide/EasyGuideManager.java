@@ -8,6 +8,7 @@ import com.github.easyguide.client.AbsGuideClient;
 import com.github.easyguide.client.CommonGuideClient;
 import com.github.easyguide.client.DialogGuideDecoration;
 import com.github.easyguide.client.ILayerChain;
+import com.github.easyguide.layer.AbsGuideLayer;
 import com.github.easyguide.layer.ILayerCallback;
 
 import java.util.ArrayList;
