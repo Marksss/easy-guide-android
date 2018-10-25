@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.github.easyguide.layer.RelativeLayerView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/text_arrow_down"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="22sp"
         android:textColor="#ff6c00"
-        android:text="this is guide 1"
-        android:layout_alignRight="@id/arrow_down"
-        android:layout_above="@id/arrow_down"/>
+        android:text="this is guide 1"/>
 
     <ImageView
         android:id="@+id/arrow_down"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/arrow_yellow_down"
-        app:target_alignRight="@+id/multi_guide_circle"
-        app:target_above="@+id/multi_guide_circle"/>
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/text_arrow_down"
+        android:src="@drawable/arrow_yellow_down"/>
 
-</com.github.easyguide.layer.RelativeLayerView>
+</RelativeLayout>

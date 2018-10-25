@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.github.easyguide.EasyGuideManager;
-import com.github.easyguide.layer.RelativeGuideLayer;
+import com.github.easyguide.layer.GuideLayer;
 
 /**
  * Created by shenxl on 2018/8/23.
@@ -26,7 +26,7 @@ public class StartActivity extends AppCompatActivity {
                 EasyGuideManager.
                         with(StartActivity.this).
                         addLayer(
-                                new RelativeGuideLayer(StartActivity.this).
+                                new GuideLayer(StartActivity.this).
                                         addTargetView(R.id.btn_basic_usage)
                         ).show();
                 /*   EasyGuide ends  */

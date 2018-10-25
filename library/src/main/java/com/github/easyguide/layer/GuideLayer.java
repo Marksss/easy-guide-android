@@ -5,57 +5,71 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.SparseArray;
 import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by shenxl on 2018/8/16.
  */
 
-public class RelativeGuideLayer extends AbsGuideLayer
-        implements RelativeLayerView.DrawCallBack, RelativeLayerView.LayerClickListener{
+public class GuideLayer extends AbsGuideLayer
+        implements GuideLayerView.DrawCallBack, GuideLayerView.LayerClickListener{
     private Activity mActivity;
-    private RelativeLayerView mViewContainer;
-    private SparseArray<Rect> mTargetCache = new SparseArray<>();
+    private GuideLayerView mViewContainer;
+    private List<Rect> mTargetCache = new ArrayList<>();
+    private List<View> mViewCache = new ArrayList<>();
     private onFullClickListener mFullClickListener;
     private onSingleClickListener mSingleClickListener;
 
-    public RelativeGuideLayer(Activity activity) {
+    public GuideLayer(Activity activity) {
         mActivity = activity;
     }
 
-    protected RelativeLayerView onCreateView(Context context){
-        return null;
+    protected void onViewCreated(Context context){
+
     }
 
     protected Activity getActivity() {
         return mActivity;
     }
 
-    public RelativeLayerView getViewContainer() {
+    public GuideLayerView getViewContainer() {
         return mViewContainer;
     }
 
-    public final RelativeGuideLayer addTargetView(int id){
+    public final GuideLayer addTargetView(int id){
         return addTargetView(mActivity.findViewById(id));
     }
 
-    public final RelativeGuideLayer addTargetView(final View view){
+    public final GuideLayer addTargetView(final View view){
         view.post(new Runnable() {
             @Override
             public void run() {
-                addTargetView(view.getId(), ViewLocUtils.getViewAbsRect(mActivity, view));
+                addTargetView(ViewLocUtils.getViewAbsRect(mActivity, view));
             }
         });
         return this;
     }
 
-    public final RelativeGuideLayer addTargetView(int id, Rect rect) {
+    public final GuideLayer addTargetView(Rect rect) {
         if (mViewContainer != null) {
-            mViewContainer.addTargetsRect(id, rect);
+            mViewContainer.addTargetsRect(rect);
             mViewContainer.requestLayout();
         } else {
-            mTargetCache.put(id, rect);
+            mTargetCache.add(rect);
+        }
+        return this;
+    }
+
+    public final GuideLayer addExtraView(View view, Location location, int tartgetIndex) {
+        location.setIndex(tartgetIndex);
+        view.setTag(location);
+        if (mViewContainer != null) {
+            mViewContainer.addView(view);
+        } else {
+            mViewCache.add(view);
         }
         return this;
     }
@@ -70,19 +84,19 @@ public class RelativeGuideLayer extends AbsGuideLayer
 
     @Override
     public final View makeView(Context context) {
-        RelativeLayerView view = onCreateView(context);
-        if (view == null) {
-            view = new RelativeLayerView(context);
-        }
-        mViewContainer = view;
+        mViewContainer = new GuideLayerView(context);
 
-        view.setDrawCallBack(this);
-        view.setLayerClickListener(this);
+        mViewContainer.setDrawCallBack(this);
+        mViewContainer.setLayerClickListener(this);
         for (int i = 0; i < mTargetCache.size(); i++) {
-            addTargetView(mTargetCache.keyAt(i), mTargetCache.valueAt(i));
+            addTargetView(mTargetCache.get(i));
         }
+        for (int i = 0; i < mViewCache.size(); i++) {
+            mViewContainer.addView(mViewCache.get(i));
+        }
+        onViewCreated(context);
 
-        return view;
+        return mViewContainer;
     }
 
     @Override
@@ -109,10 +123,10 @@ public class RelativeGuideLayer extends AbsGuideLayer
     }
 
     public interface onFullClickListener{
-        void onClick(RelativeLayerView container, ILayerCallback callback);
+        void onClick(GuideLayerView container, ILayerCallback callback);
     }
 
     public interface onSingleClickListener{
-        void onClick(int id, RelativeLayerView container, ILayerCallback callback);
+        void onClick(int id, GuideLayerView container, ILayerCallback callback);
     }
 }

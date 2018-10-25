@@ -16,8 +16,9 @@ import android.view.LayoutInflater;
 
 import com.github.easyguide.EasyGuideManager;
 import com.github.easyguide.layer.ILayerCallback;
-import com.github.easyguide.layer.RelativeGuideLayer;
-import com.github.easyguide.layer.RelativeLayerView;
+import com.github.easyguide.layer.Location;
+import com.github.easyguide.layer.GuideLayer;
+import com.github.easyguide.layer.GuideLayerView;
 
 /**
  * Created by shenxl on 2018/8/14.
@@ -31,9 +32,9 @@ public class MultiLayersActivity extends AppCompatActivity {
 
         /*   EasyGuide starts  */
         MultiLayer0 layer = new MultiLayer0(MultiLayersActivity.this);
-        layer.setSingleClickListener(new RelativeGuideLayer.onSingleClickListener() {
+        layer.setSingleClickListener(new GuideLayer.onSingleClickListener() {
             @Override
-            public void onClick(int id, RelativeLayerView container, ILayerCallback callback) {
+            public void onClick(int id, GuideLayerView container, ILayerCallback callback) {
                 callback.dismissCurrent();
             }
         });
@@ -46,17 +47,18 @@ public class MultiLayersActivity extends AppCompatActivity {
         /*   EasyGuide ends  */
     }
 
-    public class MultiLayer0 extends RelativeGuideLayer{
+    public class MultiLayer0 extends GuideLayer {
 
         public MultiLayer0(Activity activity) {
             super(activity);
         }
 
         @Override
-        protected RelativeLayerView onCreateView(Context context){
+        protected void onViewCreated(Context context){
             addTargetView(R.id.multi_guide_0);
             addTargetView(R.id.multi_guide_1);
-            return (RelativeLayerView) LayoutInflater.from(context).inflate(R.layout.layer_multi_0, null);
+            addExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_0, null), Location.TO_BOTTOM,0);
+            addExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null), Location.TO_TOP,1);
         }
 
         @Override
@@ -65,15 +67,15 @@ public class MultiLayersActivity extends AppCompatActivity {
         }
     }
 
-    public class MultiLayer1 extends RelativeGuideLayer {
+    public class MultiLayer1 extends GuideLayer {
         public MultiLayer1(Activity activity) {
             super(activity);
         }
 
         @Override
-        protected RelativeLayerView onCreateView(Context context){
+        protected void onViewCreated(Context context){
             addTargetView(R.id.multi_guide_circle);
-            return (RelativeLayerView) LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null);
+            addExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null), Location.TO_TOP,0);
         }
 
         @Override
@@ -85,7 +87,7 @@ public class MultiLayersActivity extends AppCompatActivity {
         }
     }
 
-    public class MultiLayer2 extends RelativeGuideLayer {
+    public class MultiLayer2 extends GuideLayer {
         public MultiLayer2(Activity activity) {
             super(activity);
             addTargetView(R.id.multi_guide_ladder);
@@ -93,6 +95,7 @@ public class MultiLayersActivity extends AppCompatActivity {
 
         @Override
         public void onDraw(int id, Rect rect, Canvas canvas, Paint paint) {
+            // TODO: 2018/9/5  
             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
             final Bitmap bitmap = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.ladder);
             canvas.drawBitmap(bitmap, null, new RectF(rect), paint);

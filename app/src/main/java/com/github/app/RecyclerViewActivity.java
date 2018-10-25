@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.github.easyguide.EasyGuideManager;
-import com.github.easyguide.layer.RelativeGuideLayer;
+import com.github.easyguide.layer.GuideLayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
                         EasyGuideManager.
                                 with(RecyclerViewActivity.this).
                                 addLayer(
-                                        new RelativeGuideLayer(RecyclerViewActivity.this).
+                                        new GuideLayer(RecyclerViewActivity.this).
                                                 addTargetView(mLayoutManager.findViewByPosition(targetPosition))
                                 ).show();
                         /*   EasyGuide ends  */
@@ -66,7 +66,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
                 EasyGuideManager.
                         with(RecyclerViewActivity.this).
                         addLayer(
-                                new RelativeGuideLayer(RecyclerViewActivity.this).
+                                new GuideLayer(RecyclerViewActivity.this).
                                         addTargetView(mLayoutManager.findViewByPosition(0))
                         ).show();
                 /*   EasyGuide ends  */
