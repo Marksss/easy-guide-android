@@ -32,13 +32,13 @@ public class MultiLayersActivity extends AppCompatActivity {
 
         /*   EasyGuide starts  */
         MultiLayer0 layer = new MultiLayer0(MultiLayersActivity.this);
-        layer.setSingleClickListener(new GuideLayer.onSingleTargetClickListener() {
+        layer.setTargetClickListener(new GuideLayer.onSingleTargetClickListener() {
             @Override
             public void onClick(int id, GuideLayerView container, ILayerCallback callback) {
                 callback.dismissCurrent();
             }
         });
-        EasyGuideManager.
+        EasyGuideManager.Companion.
                 with(MultiLayersActivity.this).
                 addLayer(layer).
                 addLayer(new MultiLayer1(MultiLayersActivity.this)).

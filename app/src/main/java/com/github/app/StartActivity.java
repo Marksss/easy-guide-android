@@ -23,7 +23,7 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 /*   EasyGuide starts  */
-                EasyGuideManager.
+                EasyGuideManager.Companion.
                         with(StartActivity.this).
                         addLayer(
                                 new GuideLayer(StartActivity.this).
