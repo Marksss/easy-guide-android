@@ -21,7 +21,7 @@ internal class DialogGuideClient(dialog: Dialog, private var mClient: IGuideClie
     }
 
     override fun dismissCurrent() {
-        if (!layerChain.hasNextLayer()) {
+        if (currentLayer.next == null) {
             popupWindow.dismiss()
         }
         mClient.dismissCurrent()

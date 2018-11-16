@@ -10,6 +10,8 @@ import com.github.easyguide.client.ILayerCallback
 
 abstract class AbsGuideLayer {
     internal lateinit var callback: ILayerCallback
+    internal var head: AbsGuideLayer? = null
+    internal var next: AbsGuideLayer? = null
     private lateinit var layerView: View
     private var onDismissListener: OnLayerDismissListener? = null
     private var onShowListener: OnLayerShowListener? = null
