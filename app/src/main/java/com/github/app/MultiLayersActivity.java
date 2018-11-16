@@ -38,8 +38,7 @@ public class MultiLayersActivity extends AppCompatActivity {
                 callback.dismissCurrent();
             }
         });
-        EasyGuideManager.Companion.
-                with(MultiLayersActivity.this).
+        new EasyGuideManager(MultiLayersActivity.this).
                 addLayer(layer).
                 addLayer(new MultiLayer1(MultiLayersActivity.this)).
                 addLayer(new MultiLayer2(MultiLayersActivity.this)).

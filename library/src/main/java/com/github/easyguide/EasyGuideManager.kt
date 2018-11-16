@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.widget.FrameLayout
 
-import com.github.easyguide.client.AbsGuideClient
+import com.github.easyguide.client.IGuideClient
 import com.github.easyguide.client.CommonGuideClient
 import com.github.easyguide.client.DialogGuideDecoration
 import com.github.easyguide.client.ILayerChain
@@ -14,20 +14,23 @@ import com.github.easyguide.layer.ILayerCallback
 /**
  * Created by shenxl on 2018/8/16.
  */
-
 class EasyGuideManager private constructor(
         parentView: FrameLayout,
-        private val mGuideClient: AbsGuideClient) : ILayerCallback by mGuideClient, ILayerChain {
+        private val mGuideClient: IGuideClient) : ILayerCallback by mGuideClient, ILayerChain {
+
+    init {
+        mGuideClient.parentView = parentView
+        mGuideClient.layerChain = this
+    }
+
+    constructor(parentView: FrameLayout): this(parentView, CommonGuideClient())
+    constructor(activity: Activity): this(activity.window.decorView as FrameLayout, CommonGuideClient())
+    constructor(dialog: Dialog): this(FrameLayout(dialog.context), DialogGuideDecoration(dialog))
 
     private val mGuideLayers = mutableListOf<AbsGuideLayer>()
     private lateinit var layerIterator: MutableListIterator<AbsGuideLayer>
     override lateinit var currentLayer: AbsGuideLayer
         private set
-
-    init {
-        mGuideClient.setParentView(parentView)
-        mGuideClient.setLayerChain(this)
-    }
 
     fun addLayer(layer: AbsGuideLayer): EasyGuideManager {
         layer.callback = this
@@ -45,29 +48,10 @@ class EasyGuideManager private constructor(
 
     fun show() {
         if (mGuideLayers.isEmpty()) {
-            throw IllegalArgumentException("GuideLayers must not be empty")
+            throw IllegalArgumentException("Please check if GuideLayers is empty!!!")
         }
-        currentLayer = mGuideLayers[0]
         layerIterator = mGuideLayers.listIterator()
+        stepNext()
         mGuideClient.show()
-    }
-
-    companion object {
-
-        fun with(parentView: FrameLayout): EasyGuideManager {
-            return EasyGuideManager(parentView, CommonGuideClient())
-        }
-
-        fun with(activity: Activity): EasyGuideManager {
-            return EasyGuideManager(
-                    activity.window.decorView as FrameLayout,
-                    CommonGuideClient())
-        }
-
-        fun with(dialog: Dialog): EasyGuideManager {
-            return EasyGuideManager(
-                    FrameLayout(dialog.context),
-                    DialogGuideDecoration(dialog))
-        }
     }
 }

@@ -46,8 +46,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
                             && targetPosition < lastVisibleItemPosition) {
 
                         /*   EasyGuide starts  */
-                        EasyGuideManager.Companion.
-                                with(RecyclerViewActivity.this).
+                        new EasyGuideManager(RecyclerViewActivity.this).
                                 addLayer(
                                         new GuideLayer(RecyclerViewActivity.this).
                                                 addTargetView(mLayoutManager.findViewByPosition(targetPosition))
@@ -63,8 +62,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
             public void run() {
 
                 /*   EasyGuide starts  */
-                EasyGuideManager.Companion.
-                        with(RecyclerViewActivity.this).
+                new EasyGuideManager(RecyclerViewActivity.this).
                         addLayer(
                                 new GuideLayer(RecyclerViewActivity.this).
                                         addTargetView(mLayoutManager.findViewByPosition(0))
