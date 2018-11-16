@@ -9,18 +9,18 @@ import com.github.easyguide.client.CommonGuideClient
 import com.github.easyguide.client.DialogGuideClient
 import com.github.easyguide.client.ILayerChain
 import com.github.easyguide.layer.AbsGuideLayer
-import com.github.easyguide.layer.ILayerCallback
+import com.github.easyguide.client.ILayerCallback
 
 /**
  * Created by shenxl on 2018/8/16.
  */
 class EasyGuideManager private constructor(
         parentView: FrameLayout,
-        private val mGuideClient: IGuideClient) : ILayerCallback by mGuideClient, ILayerChain {
+        private val guideClient: IGuideClient) : ILayerCallback by guideClient, ILayerChain {
 
     init {
-        mGuideClient.parentView = parentView
-        mGuideClient.layerChain = this
+        guideClient.parentView = parentView
+        guideClient.layerChain = this
     }
 
     constructor(parentView: FrameLayout): this(parentView, CommonGuideClient())
@@ -33,7 +33,7 @@ class EasyGuideManager private constructor(
         private set
 
     fun addLayer(layer: AbsGuideLayer): EasyGuideManager {
-        layer.callback = this
+        layer.callback = guideClient
         mGuideLayers.add(layer)
         return this
     }
@@ -52,6 +52,6 @@ class EasyGuideManager private constructor(
         }
         layerIterator = mGuideLayers.listIterator()
         stepNext()
-        mGuideClient.show()
+        guideClient.show()
     }
 }

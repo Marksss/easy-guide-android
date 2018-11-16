@@ -9,25 +9,26 @@ import android.widget.PopupWindow
  * Created by shenxl on 2018/8/30.
  */
 internal class DialogGuideClient(dialog: Dialog, private var mClient: IGuideClient = CommonGuideClient()) : IGuideClient by mClient{
-    private lateinit var mPopupWindow: PopupWindow
-    private var mDecorView: View = dialog.window?.decorView ?: throw IllegalArgumentException("Window in dialog is null!")
+    private lateinit var popupWindow: PopupWindow
+    private var decorView: View = dialog.window?.decorView ?: throw IllegalArgumentException("Window in dialog is null!")
 
     override fun show() {
-        mPopupWindow = PopupWindow(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        mPopupWindow.contentView = parentView
-        mPopupWindow.showAsDropDown(mDecorView)
+        popupWindow = PopupWindow(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).apply {
+            contentView = parentView
+            showAsDropDown(decorView)
+        }
         mClient.show()
     }
 
     override fun dismissCurrent() {
         if (!layerChain.hasNextLayer()) {
-            mPopupWindow.dismiss()
+            popupWindow.dismiss()
         }
         mClient.dismissCurrent()
     }
 
     override fun dismissAll() {
-        mPopupWindow.dismiss()
+        popupWindow.dismiss()
         mClient.dismissAll()
     }
 }

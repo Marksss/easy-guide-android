@@ -26,7 +26,7 @@ public class StartActivity extends AppCompatActivity {
                 new EasyGuideManager(StartActivity.this).
                         addLayer(
                                 new GuideLayer(StartActivity.this).
-                                        addTargetView(R.id.btn_basic_usage)
+                                        addTargetView(findViewById(R.id.btn_basic_usage))
                         ).show();
                 /*   EasyGuide ends  */
 

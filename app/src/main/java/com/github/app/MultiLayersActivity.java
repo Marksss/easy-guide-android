@@ -10,12 +10,13 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
 import com.github.easyguide.EasyGuideManager;
-import com.github.easyguide.layer.ILayerCallback;
+import com.github.easyguide.client.ILayerCallback;
 import com.github.easyguide.layer.Location;
 import com.github.easyguide.layer.GuideLayer;
 import com.github.easyguide.layer.GuideLayerView;
@@ -32,9 +33,9 @@ public class MultiLayersActivity extends AppCompatActivity {
 
         /*   EasyGuide starts  */
         MultiLayer0 layer = new MultiLayer0(MultiLayersActivity.this);
-        layer.setTargetClickListener(new GuideLayer.onSingleTargetClickListener() {
+        layer.setSingleTargetClickListener(new GuideLayer.OnSingleTargetClickListener() {
             @Override
-            public void onClick(int id, GuideLayerView container, ILayerCallback callback) {
+            public void onClick(int id, @NonNull GuideLayerView container, @NonNull ILayerCallback callback) {
                 callback.dismissCurrent();
             }
         });
@@ -53,15 +54,15 @@ public class MultiLayersActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onViewCreated(Context context){
-            addTargetView(R.id.multi_guide_0);
-            addTargetView(R.id.multi_guide_1);
+        protected void onViewCreated(@NonNull Context context){
+            addTargetView(findViewById(R.id.multi_guide_0));
+            addTargetView(findViewById(R.id.multi_guide_1));
             addExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_0, null), Location.TO_BOTTOM,0);
             addExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null), Location.TO_TOP,1);
         }
 
         @Override
-        public void onDraw(int id, Rect rect, Canvas canvas, Paint paint) {
+        public void onDraw(int id, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
             canvas.drawRoundRect(new RectF(rect), 10, 10, paint);
         }
     }
@@ -72,13 +73,13 @@ public class MultiLayersActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onViewCreated(Context context){
-            addTargetView(R.id.multi_guide_circle);
+        protected void onViewCreated(@NonNull Context context){
+            addTargetView(findViewById(R.id.multi_guide_circle));
             addExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null), Location.TO_TOP,0);
         }
 
         @Override
-        public void onDraw(int id, Rect rect, Canvas canvas, Paint paint) {
+        public void onDraw(int id, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
             float cx = (rect.left + rect.right)/2;
             float cy = (rect.top + rect.bottom)/2;
             float radius = Math.max((rect.right - rect.left)/2, (rect.bottom - rect.top)/2) + 10;
@@ -89,16 +90,16 @@ public class MultiLayersActivity extends AppCompatActivity {
     public class MultiLayer2 extends GuideLayer {
         public MultiLayer2(Activity activity) {
             super(activity);
-            addTargetView(R.id.multi_guide_ladder);
+            addTargetView(findViewById(R.id.multi_guide_ladder));
         }
 
         @Override
-        public void onDraw(int id, Rect rect, Canvas canvas, Paint paint) {
+        public void onDraw(int id, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
             // TODO: 2018/9/5  
             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
             final Bitmap bitmap = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.ladder);
             canvas.drawBitmap(bitmap, null, new RectF(rect), paint);
-            setOnDismissListener(new onDismissListener() {
+            setOnDismissListener(new OnLayerDismissListener() {
                 @Override
                 public void onDismiss() {
                     bitmap.recycle();
