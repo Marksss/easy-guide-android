@@ -26,24 +26,12 @@ class GuideLayerView : RelativeLayout {
     private var downX = 0f
     private var downY = 0f
 
-    constructor(context: Context) : super(context) {
-        init()
-    }
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        init()
-    }
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        init()
-    }
-
-    private fun init() {
+    init {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-    }
-
-    internal fun addTargetsRect(rect: Rect) {
-        targetRects.add(rect)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -80,8 +68,8 @@ class GuideLayerView : RelativeLayout {
         paint.isAntiAlias = true
         paint.xfermode = xfermode
         drawCallBack?.let {
-            for ((index, item) in targetRects.withIndex()) {
-                it.invoke(index, item, canvas, paint)
+            for ((index, value) in targetRects.withIndex()) {
+                it.invoke(index, value, canvas, paint)
             }
         }
         super.dispatchDraw(canvas)
@@ -115,6 +103,10 @@ class GuideLayerView : RelativeLayout {
             }
         }
         return super.onTouchEvent(event)
+    }
+
+    internal fun addTargetsRect(rect: Rect) {
+        targetRects.add(rect)
     }
 
     private fun contains(rect: Rect, x: Float, y: Float): Boolean {

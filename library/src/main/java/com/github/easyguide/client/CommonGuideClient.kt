@@ -10,7 +10,7 @@ import com.github.easyguide.layer.AbsGuideLayer
 internal class CommonGuideClient : IGuideClient {
     override lateinit var currentLayer: AbsGuideLayer
     override lateinit var parentView: FrameLayout
-    private val context: Context
+    private val context
         get() = parentView.context
 
     override fun show() {

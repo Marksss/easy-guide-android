@@ -52,7 +52,7 @@ open class GuideLayer(protected val activity: Activity) : AbsGuideLayer() {
         return this
     }
 
-    public override fun makeView(context: Context): View {
+    override fun makeView(context: Context): View {
         viewContainer = GuideLayerView(context).apply {
             drawCallBack = this@GuideLayer::onDraw
             totalClickListener = this@GuideLayer::onFullClick
