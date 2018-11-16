@@ -6,7 +6,7 @@ import android.widget.FrameLayout
 
 import com.github.easyguide.client.IGuideClient
 import com.github.easyguide.client.CommonGuideClient
-import com.github.easyguide.client.DialogGuideDecoration
+import com.github.easyguide.client.DialogGuideClient
 import com.github.easyguide.client.ILayerChain
 import com.github.easyguide.layer.AbsGuideLayer
 import com.github.easyguide.layer.ILayerCallback
@@ -25,7 +25,7 @@ class EasyGuideManager private constructor(
 
     constructor(parentView: FrameLayout): this(parentView, CommonGuideClient())
     constructor(activity: Activity): this(activity.window.decorView as FrameLayout, CommonGuideClient())
-    constructor(dialog: Dialog): this(FrameLayout(dialog.context), DialogGuideDecoration(dialog))
+    constructor(dialog: Dialog): this(FrameLayout(dialog.context), DialogGuideClient(dialog))
 
     private val mGuideLayers = mutableListOf<AbsGuideLayer>()
     private lateinit var layerIterator: MutableListIterator<AbsGuideLayer>

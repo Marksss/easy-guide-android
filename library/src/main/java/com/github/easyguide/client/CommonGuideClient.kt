@@ -6,10 +6,11 @@ import android.widget.FrameLayout
 /**
  * Created by shenxl on 2018/8/29.
  */
-class CommonGuideClient : IGuideClient {
+internal class CommonGuideClient : IGuideClient {
     override lateinit var layerChain: ILayerChain
     override lateinit var parentView: FrameLayout
-    private val context:Context by lazy { parentView.context }
+    private val context: Context
+        get() = parentView.context
 
     override fun show() {
         parentView.post {
