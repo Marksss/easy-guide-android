@@ -20,8 +20,9 @@ public class GuideLayer extends AbsGuideLayer
     private GuideLayerView mViewContainer;
     private List<Rect> mTargetCache = new ArrayList<>();
     private List<View> mViewCache = new ArrayList<>();
-    private onFullClickListener mFullClickListener;
-    private onSingleClickListener mSingleClickListener;
+    private onFullScreenClickListener mFullClickListener;
+    private onSingleTargetClickListener mSingleClickListener;
+    private boolean mDefaultClickEnable = true;
 
     public GuideLayer(Activity activity) {
         mActivity = activity;
@@ -37,6 +38,10 @@ public class GuideLayer extends AbsGuideLayer
 
     public GuideLayerView getViewContainer() {
         return mViewContainer;
+    }
+
+    public void dismissDefaultClick(){
+        mDefaultClickEnable = false;
     }
 
     public final GuideLayer addTargetView(int id){
@@ -74,11 +79,11 @@ public class GuideLayer extends AbsGuideLayer
         return this;
     }
 
-    public void setFullClickListener(onFullClickListener fullClickListener) {
+    public void setFullScreenClickListener(onFullScreenClickListener fullClickListener) {
         mFullClickListener = fullClickListener;
     }
 
-    public void setSingleClickListener(onSingleClickListener singleClickListener) {
+    public void setTargetClickListener(onSingleTargetClickListener singleClickListener) {
         mSingleClickListener = singleClickListener;
     }
 
@@ -106,7 +111,7 @@ public class GuideLayer extends AbsGuideLayer
 
     @Override
     public final void onFullClick() {
-        if (mSingleClickListener == null) {
+        if (mSingleClickListener == null && mDefaultClickEnable) {
             if (mFullClickListener == null) {
                 getCallback().dismissCurrent();
             } else {
@@ -117,16 +122,16 @@ public class GuideLayer extends AbsGuideLayer
 
     @Override
     public final void onSingleClick(int id) {
-        if (mSingleClickListener != null) {
+        if (mSingleClickListener != null && mDefaultClickEnable) {
             mSingleClickListener.onClick(id, mViewContainer, getCallback());
         }
     }
 
-    public interface onFullClickListener{
+    public interface onFullScreenClickListener {
         void onClick(GuideLayerView container, ILayerCallback callback);
     }
 
-    public interface onSingleClickListener{
+    public interface onSingleTargetClickListener {
         void onClick(int id, GuideLayerView container, ILayerCallback callback);
     }
 }
