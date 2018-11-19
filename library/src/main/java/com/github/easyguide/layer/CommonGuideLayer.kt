@@ -1,10 +1,7 @@
 package com.github.easyguide.layer
 
-import android.app.Activity
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Rect
+import android.graphics.*
 import android.os.Build
 import android.view.View
 import com.github.easyguide.client.ILayerController
@@ -14,66 +11,53 @@ import com.github.easyguide.client.ILayerController
  */
 
 open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
-    private lateinit var viewContainer: GuideLayerView
-    private val targetCache = mutableListOf<Rect>()
-    private val viewCache = mutableListOf<View>()
     var onLayerClickListener: OnLayerClickListener? = defaultTargetClick
-    var onMultiTargetsClickListener:OnMultiTargetsClickListener ? = null
+    var onMultiTargetsClickListener: OnMultiTargetsClickListener ? = null
+    private var targetCounts: Int = 0
 
-    protected open fun onViewCreated(context: Context) {
+    private val viewContainer: GuideLayerView by lazy {
+        GuideLayerView(context).apply {
+            drawCallBack = this@CommonGuideLayer::onDraw
+            targetClickListener = this@CommonGuideLayer::onTargetClick
+        }
     }
 
     fun addTargetView(view: View): CommonGuideLayer {
-        view.post {
-            addTargetView(getViewAbsRect(context, view))
-        }
+        targetCounts++
+        view.post { addTargetView(view.getViewAbsRect()) }
         return this
     }
 
     fun addTargetView(rect: Rect): CommonGuideLayer {
-        if (this::viewContainer.isInitialized) {
-            viewContainer.addTargetsRect(rect)
-            viewContainer.requestLayout()
-        } else {
-            targetCache.add(rect)
-        }
+        targetCounts++
+        viewContainer.addTargetsRect(rect)
         return this
     }
 
-    fun addExtraView(view: View, location: Location, tartgetIndex: Int): CommonGuideLayer {
-        location.setIndex(tartgetIndex)
-        view.tag = location
-        if (this::viewContainer.isInitialized) {
-            viewContainer.addView(view)
-        } else {
-            viewCache.add(view)
-        }
+    fun withExtraView(view: View, verticalOffset: Int = 0, horizontalOffset: Int = 0, vararg locations: Location): CommonGuideLayer {
+        viewContainer.addExtraView(view, targetCounts - 1, verticalOffset, horizontalOffset, locations.toList())
         return this
     }
 
-    override fun makeView(context: Context): View {
-        viewContainer = GuideLayerView(context).apply {
-            drawCallBack = this@CommonGuideLayer::onDraw
-            targetClickListener = this@CommonGuideLayer::onTargetClick
-            for (item in targetCache) {
-                addTargetsRect(item)
-            }
-            for (item in viewCache) {
-                addView(item)
-            }
-        }
+    protected open fun onViewCreated(context: Context) {
+    }
+
+    final override fun makeView(context: Context): View {
         onViewCreated(context)
+        viewContainer.post {
+            viewContainer.requestLayout()
+        }
         return viewContainer
     }
 
-    private fun onTargetClick(id: Int){
-        onMultiTargetsClickListener?.onClick(id, controller) ?: run {
-            val type = if (id == View.NO_ID) ClickType.OUTSIDE_TARGET else ClickType.ON_TARGET
+    private fun onTargetClick(index: Int){
+        onMultiTargetsClickListener?.onClick(index, controller) ?: run {
+            val type = if (index < 0) ClickType.OUTSIDE_TARGET else ClickType.ON_TARGET
             onLayerClickListener?.onClick(type, controller)
         }
     }
 
-    protected open fun onDraw(id: Int, rect: Rect, canvas: Canvas, paint: Paint) {
+    protected open fun onDraw(index: Int, rect: Rect, canvas: Canvas, paint: Paint) {
         canvas.drawRect(rect, paint)
     }
 
@@ -82,7 +66,7 @@ open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
     }
 
     interface OnMultiTargetsClickListener {
-        fun onClick(index:Int, controller: ILayerController)
+        fun onClick(index: Int, controller: ILayerController)
     }
 
     enum class ClickType {
@@ -95,13 +79,13 @@ open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
             return context.resources.getDimensionPixelSize(resourceId)
         }
 
-        fun getViewAbsRect(context: Context, view: View): Rect {
+        fun View.getViewAbsRect(): Rect {
             val locView = IntArray(2)
-            view.getLocationInWindow(locView)
-            val rect = Rect()
-            rect.set(locView[0], locView[1], locView[0] + view.measuredWidth, locView[1] + view.measuredHeight)
-            rect.offset(0, if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) -getStatusBarHeight(context) else 0)
-            return rect
+            getLocationInWindow(locView)
+            return Rect().apply {
+                set(locView[0], locView[1], locView[0] + measuredWidth, locView[1] + measuredHeight)
+                offset(0, if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) -getStatusBarHeight(context) else 0)
+            }
         }
 
         private val defaultTargetClick = object : OnLayerClickListener {

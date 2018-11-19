@@ -20,8 +20,8 @@ class GuideLayerView : RelativeLayout {
     private val targetRects = mutableListOf<Rect>()
     private val paint = Paint()
     private val xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-    internal var drawCallBack: ((id: Int, rect: Rect, canvas: Canvas, paint: Paint) -> Unit)? = null
-    internal var targetClickListener: ((id: Int) -> Unit)? = null
+    internal var drawCallBack: ((index: Int, rect: Rect, canvas: Canvas, paint: Paint) -> Unit)? = null
+    internal var targetClickListener: ((index: Int) -> Unit)? = null
     private var downX = 0f
     private var downY = 0f
 
@@ -42,22 +42,81 @@ class GuideLayerView : RelativeLayout {
         val childCount = this.childCount
         for (i in 0 until childCount) {
             val child = this.getChildAt(i)
-            val location = child.tag as Location
-            if (location.index >= targetRects.size) {
+            val locBean = child.tag as LocBean
+            if (locBean.targetIndex !in 0 until targetRects.size) {
                 continue
             }
-            val targetRect = targetRects[location.index]
+            val targetRect = targetRects[locBean.targetIndex]
             val verticalAxis = (targetRect.left + targetRect.right) / 2
             val horizontalAxis = (targetRect.top + targetRect.bottom) / 2
             val width = child.measuredWidth
             val height = child.measuredHeight
-            when (location) {
-                Location.TO_TOP -> child.layout(verticalAxis - width / 2, targetRect.top - height, verticalAxis + width / 2, targetRect.top)
-                Location.TO_BOTTOM -> child.layout(verticalAxis - width / 2, targetRect.bottom, verticalAxis + width / 2, targetRect.bottom + height)
-                Location.TO_LEFT -> child.layout(targetRect.left - width, horizontalAxis - height / 2, targetRect.left, horizontalAxis + height / 2)
-                Location.TO_RIGHT -> child.layout(targetRect.right, horizontalAxis - height / 2, targetRect.right + width, horizontalAxis + height / 2)
-                else -> child.layout(targetRect.left, targetRect.top, targetRect.right, targetRect.bottom)
+            var top = 0
+            var bottom = 0
+            var left = 0
+            var right = 0
+            locBean.locs.forEach {
+                when (it) {
+                    Location.TO_TOP -> {
+                        left = if (left == 0) verticalAxis - width / 2 else left
+                        top = targetRect.top - height
+                        right = if (right == 0) verticalAxis + width / 2 else right
+                        bottom = targetRect.top
+                    }
+                    Location.TO_BOTTOM -> {
+                        left = if (left == 0) verticalAxis - width / 2 else left
+                        top = targetRect.bottom
+                        right = if (right == 0) verticalAxis + width / 2 else right
+                        bottom = targetRect.bottom + height
+                    }
+                    Location.TO_LEFT -> {
+                        left = targetRect.left - width
+                        top = if (top == 0) horizontalAxis - height / 2 else top
+                        right = targetRect.left
+                        bottom = if (bottom == 0) horizontalAxis + height / 2 else bottom
+                    }
+                    Location.TO_RIGHT -> {
+                        left = targetRect.right
+                        top = if (top == 0) horizontalAxis - height / 2 else top
+                        right = targetRect.right + width
+                        bottom = if (bottom == 0) horizontalAxis + height / 2 else bottom
+                    }
+                    Location.COVER -> {
+                        left = targetRect.left
+                        top = targetRect.top
+                        right = targetRect.right
+                        bottom = targetRect.bottom
+                    }
+                    Location.ALIGN_TOP -> {
+                        left = if (left == 0) verticalAxis - width / 2 else left
+                        top = targetRect.top
+                        right = if (right == 0) verticalAxis + width / 2 else right
+                        bottom = targetRect.top + height
+                    }
+                    Location.ALIGN_BOTTOM -> {
+                        left = if (left == 0) verticalAxis - width / 2 else left
+                        top = targetRect.bottom - height
+                        right = if (right == 0) verticalAxis + width / 2 else right
+                        bottom = targetRect.bottom
+                    }
+                    Location.ALIGN_LEFT -> {
+                        left = targetRect.left
+                        top = if (top == 0) horizontalAxis - height / 2 else top
+                        right = targetRect.left + width
+                        bottom = if (bottom == 0) horizontalAxis + height / 2 else bottom
+                    }
+                    Location.ALIGN_RIGHT -> {
+                        left = targetRect.right - width
+                        top = if (top == 0) horizontalAxis - height / 2 else top
+                        right = targetRect.right
+                        bottom = if (bottom == 0) horizontalAxis + height / 2 else bottom
+                    }
+                }
             }
+            child.layout(left + locBean.horizontalOffset,
+                    top + locBean.verticalOffset,
+                    right + locBean.horizontalOffset,
+                    bottom + locBean.verticalOffset)
         }
     }
 
@@ -89,12 +148,12 @@ class GuideLayerView : RelativeLayout {
                 if (Math.abs(upX - downX) < 10 && Math.abs(upY - downY) < 10) {
                     targetClickListener?.let {
                         for ((index, value) in targetRects.withIndex()) {
-                            if (contains(value, upX, upY)) {
+                            if (value.contains(upX, upY)) {
                                 it.invoke(index)
                                 return true
                             }
                         }
-                        it.invoke(NO_ID)
+                        it.invoke(-1)
                         return true
                     }
                 }
@@ -107,8 +166,14 @@ class GuideLayerView : RelativeLayout {
         targetRects.add(rect)
     }
 
-    private fun contains(rect: Rect, x: Float, y: Float): Boolean {
-        return (rect.left < rect.right && rect.top < rect.bottom
-                && x >= rect.left && x < rect.right && y >= rect.top && y < rect.bottom)
+    internal fun addExtraView(view: View, targetIndex: Int, verticalOffset: Int, horizontalOffset: Int, locs: List<Location>) {
+        view.tag = LocBean(targetIndex, locs, verticalOffset, horizontalOffset)
+        addView(view)
     }
+
+    private fun Rect.contains(x: Float, y: Float): Boolean {
+        return (left < right && top < bottom && x >= left && x < right && y >= top && y < bottom)
+    }
+
+    private data class LocBean(var targetIndex: Int, var locs: List<Location>, var verticalOffset: Int, var horizontalOffset: Int)
 }

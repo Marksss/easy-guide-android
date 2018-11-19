@@ -2,12 +2,8 @@ package com.github.app;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
@@ -51,9 +47,9 @@ public class MultiLayersActivity extends AppCompatActivity {
         @Override
         protected void onViewCreated(@NonNull Context context){
             addTargetView(findViewById(R.id.multi_guide_0));
+            withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_0, null), 0, 50, Location.TO_BOTTOM, Location.ALIGN_RIGHT);
             addTargetView(findViewById(R.id.multi_guide_1));
-            addExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_0, null), Location.TO_BOTTOM,0);
-            addExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null), Location.TO_TOP,1);
+            withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null), 0, 0, Location.TO_TOP);
             setOnMultiTargetsClickListener(new OnMultiTargetsClickListener() {
                 @Override
                 public void onClick(int index, @NotNull ILayerController controller) {
@@ -82,7 +78,7 @@ public class MultiLayersActivity extends AppCompatActivity {
         @Override
         protected void onViewCreated(@NonNull Context context){
             addTargetView(findViewById(R.id.multi_guide_circle));
-            addExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null), Location.TO_TOP,0);
+            withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null), 0, 0, Location.TO_TOP);
             setOnLayerClickListener(new CommonGuideLayer.OnLayerClickListener() {
                 @Override
                 public void onClick(@NotNull CommonGuideLayer.ClickType type, @NotNull ILayerController controller) {
@@ -110,20 +106,11 @@ public class MultiLayersActivity extends AppCompatActivity {
         @Override
         protected void onViewCreated(@NotNull Context context) {
             addTargetView(findViewById(R.id.multi_guide_ladder));
+            withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_2, null), 0, 0, Location.COVER);
         }
 
         @Override
         public void onDraw(int id, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
-            // TODO: 2018/9/5  
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
-            final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ladder);
-            canvas.drawBitmap(bitmap, null, new RectF(rect), paint);
-            setOnDismissListener(new OnLayerDismissListener() {
-                @Override
-                public void onDismiss() {
-                    bitmap.recycle();
-                }
-            });
         }
     }
 }
