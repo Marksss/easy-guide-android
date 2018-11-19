@@ -50,12 +50,12 @@ public class MultiLayersActivity extends AppCompatActivity {
             withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_0, null), 0, 50, Location.TO_BOTTOM, Location.ALIGN_RIGHT);
             addTargetView(findViewById(R.id.multi_guide_1));
             withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null), 0, 0, Location.TO_TOP);
-            setOnMultiTargetsClickListener(new OnMultiTargetsClickListener() {
+            setOnLayerClickListener(new CommonGuideLayer.OnLayerClickListener() {
                 @Override
-                public void onClick(int index, @NotNull ILayerController controller) {
-                    if (index == 0) {
+                public void onClick(int targetIndex, @NotNull ILayerController controller) {
+                    if (targetIndex == 0) {
                         controller.goNext();
-                    } else if (index == 1) {
+                    } else if (targetIndex == 1) {
                         Toast.makeText(MultiLayersActivity.this, "Second Layer", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(MultiLayersActivity.this, "outside Layer", Toast.LENGTH_SHORT).show();
@@ -81,8 +81,8 @@ public class MultiLayersActivity extends AppCompatActivity {
             withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null), 0, 0, Location.TO_TOP);
             setOnLayerClickListener(new CommonGuideLayer.OnLayerClickListener() {
                 @Override
-                public void onClick(@NotNull CommonGuideLayer.ClickType type, @NotNull ILayerController controller) {
-                    if (type == CommonGuideLayer.ClickType.ON_TARGET) {
+                public void onClick(int targetIndex, @NotNull ILayerController controller) {
+                    if (targetIndex >= 0) {
                         controller.goNext();
                     }
                 }

@@ -12,7 +12,6 @@ import com.github.easyguide.client.ILayerController
 
 open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
     var onLayerClickListener: OnLayerClickListener? = defaultTargetClick
-    var onMultiTargetsClickListener: OnMultiTargetsClickListener ? = null
     private var targetCounts: Int = 0
 
     private val viewContainer: GuideLayerView by lazy {
@@ -50,11 +49,8 @@ open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
         return viewContainer
     }
 
-    private fun onTargetClick(index: Int){
-        onMultiTargetsClickListener?.onClick(index, controller) ?: run {
-            val type = if (index < 0) ClickType.OUTSIDE_TARGET else ClickType.ON_TARGET
-            onLayerClickListener?.onClick(type, controller)
-        }
+    private fun onTargetClick(index: Int) {
+        onLayerClickListener?.onClick(index, controller)
     }
 
     protected open fun onDraw(index: Int, rect: Rect, canvas: Canvas, paint: Paint) {
@@ -62,15 +58,11 @@ open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
     }
 
     interface OnLayerClickListener {
-        fun onClick(type: ClickType, controller: ILayerController)
-    }
-
-    interface OnMultiTargetsClickListener {
-        fun onClick(index: Int, controller: ILayerController)
-    }
-
-    enum class ClickType {
-        ON_TARGET, OUTSIDE_TARGET;
+        /**
+         * @param targetIndex If targetIndex < 0, clicking outside targets area; If targetIndex >= 0, clicking inside targets area and targetIndex is the index of target that clicked
+         * @param controller go to next layer or just dismiss current layer
+         */
+        fun onClick(targetIndex: Int, controller: ILayerController)
     }
 
     companion object {
@@ -89,7 +81,7 @@ open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
         }
 
         private val defaultTargetClick = object : OnLayerClickListener {
-            override fun onClick(type: ClickType, controller: ILayerController) {
+            override fun onClick(targetIndex: Int, controller: ILayerController) {
                 controller.goNext()
             }
         }
