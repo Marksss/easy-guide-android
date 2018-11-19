@@ -13,18 +13,19 @@ import com.github.easyguide.client.ILayerController
  * Created by shenxl on 2018/8/16.
  */
 
-open class CommonGuideLayer(protected val activity: Activity) : AbsGuideLayer() {
+open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
     private lateinit var viewContainer: GuideLayerView
     private val targetCache = mutableListOf<Rect>()
     private val viewCache = mutableListOf<View>()
-    var onTargetClickListener: OnTargetClickListener? = defaultTargetClick
+    var onLayerClickListener: OnLayerClickListener? = defaultTargetClick
+    var onMultiTargetsClickListener:OnMultiTargetsClickListener ? = null
 
     protected open fun onViewCreated(context: Context) {
     }
 
     fun addTargetView(view: View): CommonGuideLayer {
         view.post {
-            addTargetView(getViewAbsRect(activity, view))
+            addTargetView(getViewAbsRect(context, view))
         }
         return this
     }
@@ -66,16 +67,22 @@ open class CommonGuideLayer(protected val activity: Activity) : AbsGuideLayer() 
     }
 
     private fun onTargetClick(id: Int){
-        val type = if (id == View.NO_ID) ClickType.OUTSIDE_TARGET else ClickType.ON_TARGET
-        onTargetClickListener?.onClick(type, controller)
+        onMultiTargetsClickListener?.onClick(id, controller) ?: run {
+            val type = if (id == View.NO_ID) ClickType.OUTSIDE_TARGET else ClickType.ON_TARGET
+            onLayerClickListener?.onClick(type, controller)
+        }
     }
 
     protected open fun onDraw(id: Int, rect: Rect, canvas: Canvas, paint: Paint) {
         canvas.drawRect(rect, paint)
     }
 
-    interface OnTargetClickListener {
+    interface OnLayerClickListener {
         fun onClick(type: ClickType, controller: ILayerController)
+    }
+
+    interface OnMultiTargetsClickListener {
+        fun onClick(index:Int, controller: ILayerController)
     }
 
     enum class ClickType {
@@ -97,7 +104,7 @@ open class CommonGuideLayer(protected val activity: Activity) : AbsGuideLayer() 
             return rect
         }
 
-        private val defaultTargetClick = object : OnTargetClickListener {
+        private val defaultTargetClick = object : OnLayerClickListener {
             override fun onClick(type: ClickType, controller: ILayerController) {
                 controller.goNext()
             }
