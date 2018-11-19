@@ -1,6 +1,5 @@
 package com.github.easyguide.client
 
-import android.content.Context
 import android.widget.FrameLayout
 import com.github.easyguide.layer.AbsGuideLayer
 
@@ -21,7 +20,7 @@ internal class CommonGuideClient : IGuideClient {
         }
     }
 
-    override fun dismissCurrent() {
+    override fun goNext() {
         currentLayer.onDismiss()
         val preView = currentLayer.getView(context)
         currentLayer.next?.let {
@@ -31,7 +30,7 @@ internal class CommonGuideClient : IGuideClient {
         parentView.removeView(preView)
     }
 
-    override fun dismissAll() {
+    override fun dismiss() {
         currentLayer.onDismiss()
         parentView.removeView(currentLayer.getView(context))
     }

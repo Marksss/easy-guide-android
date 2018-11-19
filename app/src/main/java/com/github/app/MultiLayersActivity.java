@@ -16,10 +16,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 
 import com.github.easyguide.EasyGuideManager;
-import com.github.easyguide.client.ILayerCallback;
+import com.github.easyguide.client.ILayerController;
 import com.github.easyguide.layer.Location;
-import com.github.easyguide.layer.GuideLayer;
+import com.github.easyguide.layer.CommonGuideLayer;
 import com.github.easyguide.layer.GuideLayerView;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by shenxl on 2018/8/14.
@@ -33,10 +35,12 @@ public class MultiLayersActivity extends AppCompatActivity {
 
         /*   EasyGuide starts  */
         MultiLayer0 layer = new MultiLayer0(MultiLayersActivity.this);
-        layer.setSingleTargetClickListener(new GuideLayer.OnSingleTargetClickListener() {
+        layer.setOnTargetClickListener(new CommonGuideLayer.OnTargetClickListener() {
             @Override
-            public void onClick(int id, @NonNull GuideLayerView container, @NonNull ILayerCallback callback) {
-                callback.dismissCurrent();
+            public void onClick(@NotNull CommonGuideLayer.ClickType type, @NotNull ILayerController controller) {
+                if (type == CommonGuideLayer.ClickType.ON_TARGET) {
+                    controller.goNext();
+                }
             }
         });
         new EasyGuideManager(MultiLayersActivity.this).
@@ -47,7 +51,7 @@ public class MultiLayersActivity extends AppCompatActivity {
         /*   EasyGuide ends  */
     }
 
-    public class MultiLayer0 extends GuideLayer {
+    public class MultiLayer0 extends CommonGuideLayer {
 
         public MultiLayer0(Activity activity) {
             super(activity);
@@ -67,7 +71,7 @@ public class MultiLayersActivity extends AppCompatActivity {
         }
     }
 
-    public class MultiLayer1 extends GuideLayer {
+    public class MultiLayer1 extends CommonGuideLayer {
         public MultiLayer1(Activity activity) {
             super(activity);
         }
@@ -87,7 +91,7 @@ public class MultiLayersActivity extends AppCompatActivity {
         }
     }
 
-    public class MultiLayer2 extends GuideLayer {
+    public class MultiLayer2 extends CommonGuideLayer {
         public MultiLayer2(Activity activity) {
             super(activity);
             addTargetView(findViewById(R.id.multi_guide_ladder));

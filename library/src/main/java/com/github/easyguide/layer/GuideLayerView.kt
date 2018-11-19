@@ -21,8 +21,7 @@ class GuideLayerView : RelativeLayout {
     private val paint = Paint()
     private val xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
     internal var drawCallBack: ((id: Int, rect: Rect, canvas: Canvas, paint: Paint) -> Unit)? = null
-    internal var totalClickListener: (() -> Unit)? = null
-    internal var singleClickListener: ((id: Int) -> Unit)? = null
+    internal var targetClickListener: ((id: Int) -> Unit)? = null
     private var downX = 0f
     private var downY = 0f
 
@@ -83,22 +82,21 @@ class GuideLayerView : RelativeLayout {
                 downY = event.y
                 return true
             }
-            MotionEvent.ACTION_MOVE -> {
-            }
-            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+            MotionEvent.ACTION_UP -> {
+                performClick()
                 val upX = event.x
                 val upY = event.y
                 if (Math.abs(upX - downX) < 10 && Math.abs(upY - downY) < 10) {
-                    totalClickListener?.invoke()
-                    singleClickListener?.let {
+                    targetClickListener?.let {
                         for ((index, value) in targetRects.withIndex()) {
                             if (contains(value, upX, upY)) {
                                 it.invoke(index)
                                 return true
                             }
                         }
+                        it.invoke(NO_ID)
+                        return true
                     }
-                    performClick()
                 }
             }
         }

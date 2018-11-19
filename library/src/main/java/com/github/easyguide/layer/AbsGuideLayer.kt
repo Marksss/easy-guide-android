@@ -2,14 +2,14 @@ package com.github.easyguide.layer
 
 import android.content.Context
 import android.view.View
-import com.github.easyguide.client.ILayerCallback
+import com.github.easyguide.client.ILayerController
 
 /**
  * Created by shenxl on 2018/8/16.
  */
 
 abstract class AbsGuideLayer {
-    internal lateinit var callback: ILayerCallback
+    lateinit var controller: ILayerController
     internal var head: AbsGuideLayer? = null
     internal var next: AbsGuideLayer? = null
     private lateinit var layerView: View

@@ -20,15 +20,15 @@ internal class DialogGuideClient(dialog: Dialog, private var mClient: IGuideClie
         mClient.show()
     }
 
-    override fun dismissCurrent() {
+    override fun goNext() {
         if (currentLayer.next == null) {
             popupWindow.dismiss()
         }
-        mClient.dismissCurrent()
+        mClient.goNext()
     }
 
-    override fun dismissAll() {
+    override fun dismiss() {
         popupWindow.dismiss()
-        mClient.dismissAll()
+        mClient.dismiss()
     }
 }
