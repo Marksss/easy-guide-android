@@ -10,19 +10,16 @@
         android:id="@+id/arrow_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="15dp"
-        android:layout_toRightOf="@id/text_arrow_up"
-        android:src="@drawable/arrow_yellow_up"/>
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/arrow_yellow_up_x"/>
 
     <TextView
         android:id="@+id/text_arrow_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/arrow_up"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_below="@id/arrow_up"
         android:textSize="28sp"
         android:textColor="#ff6c00"
-        android:text="GUIDE-0"/>
+        android:text="CIRCLE-GUIDE"/>
 
 </RelativeLayout>

@@ -68,7 +68,10 @@ public class MultiLayersActivity extends AppCompatActivity {
     private CommonGuideLayer getLayer1() {
         CommonGuideLayer layer = new CommonGuideLayer(this).
                 addHighlightTarget(findViewById(R.id.multi_guide_circle)).
-                withExtraView(LayoutInflater.from(this).inflate(R.layout.layer_multi_1, null), 0, 0, Location.TO_TOP);
+                withExtraView(LayoutInflater.from(this).inflate(R.layout.layer_multi_3, null),
+                        (int) DisplayUtils.dp2px(MultiLayersActivity.this, -6f),
+                        (int) DisplayUtils.dp2px(MultiLayersActivity.this, 50f),
+                        Location.TO_BOTTOM);
         layer.setOnLayerClickListener(new CommonGuideLayer.OnLayerClickListener() {
             @Override
             public void onClick(int targetIndex, @NotNull ILayerController controller) {
@@ -92,7 +95,11 @@ public class MultiLayersActivity extends AppCompatActivity {
     private CommonGuideLayer getLayer2() {
         CommonGuideLayer layer = new CommonGuideLayer(this).
                 addHighlightTarget(findViewById(R.id.multi_guide_ladder)).
-                withExtraView(LayoutInflater.from(this).inflate(R.layout.layer_multi_2, null), 0, 0, Location.COVER);
+                withExtraView(LayoutInflater.from(this).inflate(R.layout.layer_multi_2, null), 0, 0, Location.COVER).
+                withExtraView(LayoutInflater.from(this).inflate(R.layout.layer_multi_4, null),
+                        0,
+                        (int) DisplayUtils.dp2px(MultiLayersActivity.this, 10f),
+                        Location.TO_BOTTOM);
         layer.setOnHighLightDrawListener(null);
         return layer;
     }

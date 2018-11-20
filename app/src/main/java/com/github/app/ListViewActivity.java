@@ -27,7 +27,7 @@ public class ListViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_listview);
 
         List<String> dataList = new ArrayList<>();
-        for (int i = 0; i < 35; i++) {
+        for (int i = 0; i < 40; i++) {
             dataList.add("listview's item - " + i);
         }
         ListAdapter adapter = new ArrayAdapter<String>(ListViewActivity.this,
