@@ -32,10 +32,16 @@ abstract class AbsGuideLayer {
     internal abstract fun makeView(context: Context): View
 
     interface OnLayerDismissListener {
+        /**
+         * Invoke when the current layer dismisses
+         */
         fun onDismiss()
     }
 
     interface OnLayerShowListener {
+        /**
+         * Invoke when the current layer shows
+         */
         fun onShow()
     }
 }

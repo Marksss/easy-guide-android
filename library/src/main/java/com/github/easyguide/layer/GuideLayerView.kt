@@ -15,7 +15,7 @@ import android.widget.RelativeLayout
  * Created by shenxl on 2018/8/16.
  */
 
-class GuideLayerView : RelativeLayout {
+internal class GuideLayerView : RelativeLayout {
     var baseColor = 0x60000000
     private val targetRects = mutableListOf<Rect>()
     private val paint = Paint()

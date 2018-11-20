@@ -26,12 +26,32 @@ class EasyGuideManager private constructor(
         guideClient.parentView = parentView
     }
 
+    /**
+     * Just add layers to the FrameLayout
+     * @param parentView
+     */
     constructor(parentView: FrameLayout) : this(parentView, CommonGuideClient())
+
+    /**
+     * Add layers to decorView
+     * @param activity
+     */
     constructor(activity: Activity) : this(activity.window.decorView as FrameLayout, CommonGuideClient())
+
+    /**
+     * Show layers on a dialog
+     * @param dialog
+     */
     constructor(dialog: Dialog) : this(FrameLayout(dialog.context), DialogGuideClient(dialog))
 
+    /**
+     * Called before {@link #show()}
+     * @param layer
+     */
     fun addLayer(layer: AbsGuideLayer): EasyGuideManager {
         layer.controller = guideClient
+
+        // chain-of-responsibility pattern
         layerAdded?.let {
             it.next = layer
             layer.head = it.head
@@ -42,6 +62,9 @@ class EasyGuideManager private constructor(
         return this
     }
 
+    /**
+     * Show the first layer that is added
+     */
     fun show() {
         guideClient.currentLayer = layerAdded?.head ?: throw IllegalArgumentException("Please check if GuideLayers is empty!!!")
         guideClient.show()
