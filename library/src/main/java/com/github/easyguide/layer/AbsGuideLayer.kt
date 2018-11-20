@@ -9,7 +9,7 @@ import com.github.easyguide.client.ILayerController
  */
 
 abstract class AbsGuideLayer {
-    lateinit var controller: ILayerController
+    internal lateinit var controller: ILayerController
     internal var head: AbsGuideLayer? = null
     internal var next: AbsGuideLayer? = null
     private lateinit var view: View
@@ -33,14 +33,14 @@ abstract class AbsGuideLayer {
 
     interface OnLayerDismissListener {
         /**
-         * Invoke when the current layer dismisses
+         * Callback method to be invoked when the current layer dismisses
          */
         fun onDismiss()
     }
 
     interface OnLayerShowListener {
         /**
-         * Invoke when the current layer shows
+         * Callback method to be invoked when the current layer shows
          */
         fun onShow()
     }

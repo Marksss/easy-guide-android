@@ -45,7 +45,7 @@ class EasyGuideManager private constructor(
     constructor(dialog: Dialog) : this(FrameLayout(dialog.context), DialogGuideClient(dialog))
 
     /**
-     * Called before {@link #show()}
+     * Call before {@link #show()}
      * @param layer
      */
     fun addLayer(layer: AbsGuideLayer): EasyGuideManager {

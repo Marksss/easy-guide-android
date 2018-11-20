@@ -30,6 +30,9 @@
 
         <activity android:name="com.github.app.AnimGuideActivity">
         </activity>
+
+        <activity android:name="com.github.app.ListViewActivity">
+        </activity>
     </application>
 
 </manifest>

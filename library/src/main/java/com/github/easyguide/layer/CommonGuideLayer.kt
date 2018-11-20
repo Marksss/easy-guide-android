@@ -48,7 +48,7 @@ class CommonGuideLayer(context: Context) : AbsGuideLayer() {
     }
 
     /**
-     * Called right after {@link #addHighlightTarget()}, and the extra view's layout will be based on
+     * Call right after {@link #addHighlightTarget()}, and the extra view's layout will be based on
      * the target that was added lately
      *
      * @param view Customized extra view around the target that highlights, such as pictures, texts
@@ -88,8 +88,10 @@ class CommonGuideLayer(context: Context) : AbsGuideLayer() {
 
     interface OnLayerClickListener {
         /**
+         * Callback method to be invoked when layer is clicked
          * If targetIndex < 0, clicking outside targets area;
          * If targetIndex >= 0, clicking inside targets area and targetIndex is the index of target that clicked
+         *
          * @param targetIndex
          * @param controller
          */
@@ -98,7 +100,7 @@ class CommonGuideLayer(context: Context) : AbsGuideLayer() {
 
     interface OnHighLightDrawListener {
         /**
-         * Used for customizing the shape of highlight area
+         * Callback method used for customizing the shape of highlight area
          *
          * @param index The index of target that is added
          * @param rect

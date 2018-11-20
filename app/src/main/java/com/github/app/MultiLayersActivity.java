@@ -41,7 +41,7 @@ public class MultiLayersActivity extends AppCompatActivity {
     private CommonGuideLayer getLayer0() {
         CommonGuideLayer layer = new CommonGuideLayer(this).
                 addHighlightTarget(findViewById(R.id.multi_guide_0)).
-                withExtraView(LayoutInflater.from(this).inflate(R.layout.layer_multi_0, null), 0, 50, Location.TO_BOTTOM, Location.ALIGN_RIGHT).
+                withExtraView(LayoutInflater.from(this).inflate(R.layout.layer_multi_0, null), 0, (int) DisplayUtils.dp2px(MultiLayersActivity.this, 25f), Location.TO_BOTTOM, Location.ALIGN_RIGHT).
                 addHighlightTarget(findViewById(R.id.multi_guide_1)).
                 withExtraView(LayoutInflater.from(this).inflate(R.layout.layer_multi_1, null), 0, 0, Location.TO_TOP);
         layer.setOnLayerClickListener(new CommonGuideLayer.OnLayerClickListener() {

@@ -47,6 +47,13 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.btn_listview).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(StartActivity.this, ListViewActivity.class));
+            }
+        });
+
         findViewById(R.id.btn_dialog).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

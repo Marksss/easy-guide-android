@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -29,8 +30,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         ArrayList<String> data = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            data.add("item:" + i);
+        for (int i = 0; i < 35; i++) {
+            data.add("recyclerview's item: " + i);
         }
         recyclerView.setAdapter(new Adapter(data));
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
