@@ -6,16 +6,16 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.Toast;
 
 import com.github.easyguide.EasyGuideManager;
 import com.github.easyguide.client.ILayerController;
-import com.github.easyguide.layer.Location;
 import com.github.easyguide.layer.CommonGuideLayer;
+import com.github.easyguide.layer.Location;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -46,9 +46,9 @@ public class MultiLayersActivity extends AppCompatActivity {
 
         @Override
         protected void onViewCreated(@NonNull Context context){
-            addTargetView(findViewById(R.id.multi_guide_0));
+            addHighlightTarget(findViewById(R.id.multi_guide_0));
             withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_0, null), 0, 50, Location.TO_BOTTOM, Location.ALIGN_RIGHT);
-            addTargetView(findViewById(R.id.multi_guide_1));
+            addHighlightTarget(findViewById(R.id.multi_guide_1));
             withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null), 0, 0, Location.TO_TOP);
             setOnLayerClickListener(new CommonGuideLayer.OnLayerClickListener() {
                 @Override
@@ -62,11 +62,12 @@ public class MultiLayersActivity extends AppCompatActivity {
                     }
                 }
             });
-        }
-
-        @Override
-        public void onDraw(int id, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
-            canvas.drawRoundRect(new RectF(rect), 10, 10, paint);
+            setOnHighLightDrawListener(new OnHighLightDrawListener() {
+                @Override
+                public void onDraw(int index, @NotNull Rect rect, @NotNull Canvas canvas, @NotNull Paint paint) {
+                    canvas.drawRoundRect(new RectF(rect), 10, 10, paint);
+                }
+            });
         }
     }
 
@@ -77,7 +78,7 @@ public class MultiLayersActivity extends AppCompatActivity {
 
         @Override
         protected void onViewCreated(@NonNull Context context){
-            addTargetView(findViewById(R.id.multi_guide_circle));
+            addHighlightTarget(findViewById(R.id.multi_guide_circle));
             withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null), 0, 0, Location.TO_TOP);
             setOnLayerClickListener(new CommonGuideLayer.OnLayerClickListener() {
                 @Override
@@ -87,14 +88,15 @@ public class MultiLayersActivity extends AppCompatActivity {
                     }
                 }
             });
-        }
-
-        @Override
-        public void onDraw(int id, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
-            float cx = (rect.left + rect.right)/2;
-            float cy = (rect.top + rect.bottom)/2;
-            float radius = Math.max((rect.right - rect.left)/2, (rect.bottom - rect.top)/2) + 10;
-            canvas.drawCircle(cx, cy, radius, paint);
+            setOnHighLightDrawListener(new OnHighLightDrawListener() {
+                @Override
+                public void onDraw(int index, @NotNull Rect rect, @NotNull Canvas canvas, @NotNull Paint paint) {
+                    float cx = (rect.left + rect.right)/2;
+                    float cy = (rect.top + rect.bottom)/2;
+                    float radius = Math.max((rect.right - rect.left)/2, (rect.bottom - rect.top)/2) + 10;
+                    canvas.drawCircle(cx, cy, radius, paint);
+                }
+            });
         }
     }
 
@@ -105,12 +107,9 @@ public class MultiLayersActivity extends AppCompatActivity {
 
         @Override
         protected void onViewCreated(@NotNull Context context) {
-            addTargetView(findViewById(R.id.multi_guide_ladder));
+            addHighlightTarget(findViewById(R.id.multi_guide_ladder));
             withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_2, null), 0, 0, Location.COVER);
-        }
-
-        @Override
-        public void onDraw(int id, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
+            setOnHighLightDrawListener(null);
         }
     }
 }

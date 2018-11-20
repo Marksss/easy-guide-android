@@ -12,21 +12,21 @@ abstract class AbsGuideLayer {
     lateinit var controller: ILayerController
     internal var head: AbsGuideLayer? = null
     internal var next: AbsGuideLayer? = null
-    private lateinit var layerView: View
+    private lateinit var view: View
     var onDismissListener: OnLayerDismissListener? = null
     var onShowListener: OnLayerShowListener? = null
 
-    internal fun onDismiss() {
+    internal open fun onDismiss() {
         onDismissListener?.onDismiss()
     }
 
-    internal fun onShow() {
+    internal open fun onShow() {
         onShowListener?.onShow()
     }
 
     internal fun getView(context: Context): View {
-        layerView = if (this::layerView.isInitialized) layerView else makeView(context)
-        return layerView
+        view = if (this::view.isInitialized) view else makeView(context)
+        return view
     }
 
     internal abstract fun makeView(context: Context): View

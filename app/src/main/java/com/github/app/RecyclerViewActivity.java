@@ -49,7 +49,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
                         new EasyGuideManager(RecyclerViewActivity.this).
                                 addLayer(
                                         new CommonGuideLayer(RecyclerViewActivity.this).
-                                                addTargetView(mLayoutManager.findViewByPosition(targetPosition))
+                                                addHighlightTarget(mLayoutManager.findViewByPosition(targetPosition))
                                 ).show();
                         /*   EasyGuide ends  */
                     }
@@ -65,7 +65,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
                 new EasyGuideManager(RecyclerViewActivity.this).
                         addLayer(
                                 new CommonGuideLayer(RecyclerViewActivity.this).
-                                        addTargetView(mLayoutManager.findViewByPosition(0))
+                                        addHighlightTarget(mLayoutManager.findViewByPosition(0))
                         ).show();
                 /*   EasyGuide ends  */
             }

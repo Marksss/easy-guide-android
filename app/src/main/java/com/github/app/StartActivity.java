@@ -26,7 +26,7 @@ public class StartActivity extends AppCompatActivity {
                 new EasyGuideManager(StartActivity.this).
                         addLayer(
                                 new CommonGuideLayer(StartActivity.this).
-                                        addTargetView(findViewById(R.id.btn_basic_usage))
+                                        addHighlightTarget(findViewById(R.id.btn_basic_usage))
                         ).show();
                 /*   EasyGuide ends  */
 
@@ -51,6 +51,13 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(StartActivity.this, DialogActivity.class));
+            }
+        });
+
+        findViewById(R.id.btn_animation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(StartActivity.this, AnimGuideActivity.class));
             }
         });
     }

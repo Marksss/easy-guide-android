@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.os.Build
 import android.view.View
+import android.view.animation.Animation
 import com.github.easyguide.client.ILayerController
 
 /**
@@ -11,15 +12,18 @@ import com.github.easyguide.client.ILayerController
  */
 
 open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
-    private var targetCounts: Int = 0
-    private val viewContainer: GuideLayerView
+    private var targetCounts = 0
+    private val layerView: GuideLayerView
+    var enterAnimation: Animation? = null
+    var exitAnimation: Animation? = null
     var onLayerClickListener: OnLayerClickListener? = defaultTargetClick
+    var onHighLightDrawListener: OnHighLightDrawListener? = defaultHighlightDraw
     var backgroundColor: Int
-        get() = viewContainer.baseColor
-        set(value) {viewContainer.baseColor = value}
+        get() = layerView.baseColor
+        set(value) {layerView.baseColor = value}
 
     init {
-        viewContainer = GuideLayerView(context).apply {
+        layerView = GuideLayerView(context).apply {
             drawCallBack = this@CommonGuideLayer::onDraw
             targetClickListener = this@CommonGuideLayer::onTargetClick
         }
@@ -28,23 +32,23 @@ open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
     /**
      * @param view The target view that highlights
      */
-    fun addTargetView(view: View): CommonGuideLayer {
+    fun addHighlightTarget(view: View): CommonGuideLayer {
         targetCounts++
-        view.post { addTargetView(view.getViewAbsRect()) }
+        view.post { addHighlightTarget(view.getViewAbsRect()) }
         return this
     }
 
     /**
-     * @param rect The area that highlights
+     * @param rect Specific block that highlights
      */
-    fun addTargetView(rect: Rect): CommonGuideLayer {
+    fun addHighlightTarget(rect: Rect): CommonGuideLayer {
         targetCounts++
-        viewContainer.addTargetsRect(rect)
+        layerView.addTargetsRect(rect)
         return this
     }
 
     /**
-     * Called right after {@link #addTargetView()}, and the extra view's layout will be based on
+     * Called right after {@link #addHighlightTarget()}, and the extra view's layout will be based on
      * the target that was added lately
      *
      * @param view Customized extra view around the target that highlights, such as pictures, texts
@@ -53,7 +57,7 @@ open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
      * @param locations Rules that orgnize the layout of extra view
      */
     fun withExtraView(view: View, verticalOffset: Int = 0, horizontalOffset: Int = 0, vararg locations: Location): CommonGuideLayer {
-        viewContainer.addExtraView(view, targetCounts - 1, verticalOffset, horizontalOffset, locations.toList())
+        layerView.addExtraView(view, targetCounts - 1, verticalOffset, horizontalOffset, locations.toList())
         return this
     }
 
@@ -62,26 +66,28 @@ open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
 
     final override fun makeView(context: Context): View {
         onViewCreated(context)
-        viewContainer.post {
-            viewContainer.requestLayout()
+        layerView.post {
+            layerView.requestLayout()
         }
-        return viewContainer
+        return layerView
+    }
+
+    override fun onShow() {
+        enterAnimation?.let { layerView.startAnimation(it) }
+        super.onShow()
+    }
+
+    override fun onDismiss() {
+        exitAnimation?.let { layerView.startAnimation(it) }
+        super.onDismiss()
     }
 
     private fun onTargetClick(index: Int) {
         onLayerClickListener?.onClick(index, controller)
     }
 
-    /**
-     * Used for customizing the shape of highlight area when rewrote
-     *
-     * @param index The index of target that is added
-     * @param rect
-     * @param canvas
-     * @param paint
-     */
-    protected open fun onDraw(index: Int, rect: Rect, canvas: Canvas, paint: Paint) {
-        canvas.drawRect(rect, paint)
+    private fun onDraw(index: Int, rect: Rect, canvas: Canvas, paint: Paint) {
+        onHighLightDrawListener?.onDraw(index, rect, canvas, paint)
     }
 
     interface OnLayerClickListener {
@@ -92,6 +98,18 @@ open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
          * @param controller
          */
         fun onClick(targetIndex: Int, controller: ILayerController)
+    }
+
+    interface OnHighLightDrawListener {
+        /**
+         * Used for customizing the shape of highlight area
+         *
+         * @param index The index of target that is added
+         * @param rect
+         * @param canvas
+         * @param paint
+         */
+        fun onDraw(index: Int, rect: Rect, canvas: Canvas, paint: Paint)
     }
 
     companion object {
@@ -112,6 +130,12 @@ open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
         private val defaultTargetClick = object : OnLayerClickListener {
             override fun onClick(targetIndex: Int, controller: ILayerController) {
                 controller.goNext()
+            }
+        }
+
+        private val defaultHighlightDraw = object : OnHighLightDrawListener {
+            override fun onDraw(index: Int, rect: Rect, canvas: Canvas, paint: Paint) {
+                canvas.drawRect(rect, paint)
             }
         }
     }

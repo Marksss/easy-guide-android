@@ -35,7 +35,7 @@ public class DialogActivity extends AppCompatActivity {
                     public void onShow(DialogInterface dialogInterface) {
 
                         /*   EasyGuide starts  */
-                        AbsGuideLayer basicLayer = new CommonGuideLayer(DialogActivity.this).addTargetView(view1.findViewById(R.id.dialog_top));
+                        AbsGuideLayer basicLayer = new CommonGuideLayer(DialogActivity.this).addHighlightTarget(view1.findViewById(R.id.dialog_top));
                         mEasyGuideManager = new EasyGuideManager(dialog).addLayer(basicLayer);
                         mEasyGuideManager.show();
                         /*   EasyGuide ends  */

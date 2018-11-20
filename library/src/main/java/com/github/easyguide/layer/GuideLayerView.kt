@@ -20,10 +20,10 @@ internal class GuideLayerView : RelativeLayout {
     private val targetRects = mutableListOf<Rect>()
     private val paint = Paint()
     private val xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-    internal var drawCallBack: ((index: Int, rect: Rect, canvas: Canvas, paint: Paint) -> Unit)? = null
-    internal var targetClickListener: ((index: Int) -> Unit)? = null
     private var downX = 0f
     private var downY = 0f
+    var drawCallBack: ((index: Int, rect: Rect, canvas: Canvas, paint: Paint) -> Unit)? = null
+    var targetClickListener: ((index: Int) -> Unit)? = null
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -162,11 +162,11 @@ internal class GuideLayerView : RelativeLayout {
         return super.onTouchEvent(event)
     }
 
-    internal fun addTargetsRect(rect: Rect) {
+    fun addTargetsRect(rect: Rect) {
         targetRects.add(rect)
     }
 
-    internal fun addExtraView(view: View, targetIndex: Int, verticalOffset: Int, horizontalOffset: Int, locs: List<Location>) {
+    fun addExtraView(view: View, targetIndex: Int, verticalOffset: Int, horizontalOffset: Int, locs: List<Location>) {
         view.tag = LocBean(targetIndex, locs, verticalOffset, horizontalOffset)
         addView(view)
     }
