@@ -11,7 +11,7 @@ import com.github.easyguide.client.ILayerController
  * Created by shenxl on 2018/8/16.
  */
 
-open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
+class CommonGuideLayer(context: Context) : AbsGuideLayer() {
     private var targetCounts = 0
     private val layerView: GuideLayerView
     var enterAnimation: Animation? = null
@@ -61,11 +61,7 @@ open class CommonGuideLayer(protected val context: Context) : AbsGuideLayer() {
         return this
     }
 
-    protected open fun onViewCreated(context: Context) {
-    }
-
-    final override fun makeView(context: Context): View {
-        onViewCreated(context)
+    override fun makeView(context: Context): View {
         layerView.post {
             layerView.requestLayout()
         }

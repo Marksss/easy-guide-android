@@ -31,85 +31,69 @@ public class MultiLayersActivity extends AppCompatActivity {
 
         /*   EasyGuide starts  */
         new EasyGuideManager(MultiLayersActivity.this).
-                addLayer(new MultiLayer0(MultiLayersActivity.this)).
-                addLayer(new MultiLayer1(MultiLayersActivity.this)).
-                addLayer(new MultiLayer2(MultiLayersActivity.this)).
+                addLayer(getLayer0()).
+                addLayer(getLayer1()).
+                addLayer(getLayer2()).
                 show();
         /*   EasyGuide ends  */
     }
 
-    public class MultiLayer0 extends CommonGuideLayer {
-
-        public MultiLayer0(Activity activity) {
-            super(activity);
-        }
-
-        @Override
-        protected void onViewCreated(@NonNull Context context){
-            addHighlightTarget(findViewById(R.id.multi_guide_0));
-            withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_0, null), 0, 50, Location.TO_BOTTOM, Location.ALIGN_RIGHT);
-            addHighlightTarget(findViewById(R.id.multi_guide_1));
-            withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null), 0, 0, Location.TO_TOP);
-            setOnLayerClickListener(new CommonGuideLayer.OnLayerClickListener() {
-                @Override
-                public void onClick(int targetIndex, @NotNull ILayerController controller) {
-                    if (targetIndex == 0) {
-                        controller.goNext();
-                    } else if (targetIndex == 1) {
-                        Toast.makeText(MultiLayersActivity.this, "Second Layer", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(MultiLayersActivity.this, "outside Layer", Toast.LENGTH_SHORT).show();
-                    }
+    private CommonGuideLayer getLayer0() {
+        CommonGuideLayer layer = new CommonGuideLayer(this).
+                addHighlightTarget(findViewById(R.id.multi_guide_0)).
+                withExtraView(LayoutInflater.from(this).inflate(R.layout.layer_multi_0, null), 0, 50, Location.TO_BOTTOM, Location.ALIGN_RIGHT).
+                addHighlightTarget(findViewById(R.id.multi_guide_1)).
+                withExtraView(LayoutInflater.from(this).inflate(R.layout.layer_multi_1, null), 0, 0, Location.TO_TOP);
+        layer.setOnLayerClickListener(new CommonGuideLayer.OnLayerClickListener() {
+            @Override
+            public void onClick(int targetIndex, @NotNull ILayerController controller) {
+                if (targetIndex == 0) {
+                    controller.goNext();
+                } else if (targetIndex == 1) {
+                    Toast.makeText(MultiLayersActivity.this, "Second Layer", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MultiLayersActivity.this, "outside Layer", Toast.LENGTH_SHORT).show();
                 }
-            });
-            setOnHighLightDrawListener(new OnHighLightDrawListener() {
-                @Override
-                public void onDraw(int index, @NotNull Rect rect, @NotNull Canvas canvas, @NotNull Paint paint) {
-                    canvas.drawRoundRect(new RectF(rect), 10, 10, paint);
-                }
-            });
-        }
+            }
+        });
+        layer.setOnHighLightDrawListener(new CommonGuideLayer.OnHighLightDrawListener() {
+            @Override
+            public void onDraw(int index, @NotNull Rect rect, @NotNull Canvas canvas, @NotNull Paint paint) {
+                canvas.drawRoundRect(new RectF(rect), 10, 10, paint);
+            }
+        });
+        return layer;
     }
 
-    public class MultiLayer1 extends CommonGuideLayer {
-        public MultiLayer1(Activity activity) {
-            super(activity);
-        }
-
-        @Override
-        protected void onViewCreated(@NonNull Context context){
-            addHighlightTarget(findViewById(R.id.multi_guide_circle));
-            withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_1, null), 0, 0, Location.TO_TOP);
-            setOnLayerClickListener(new CommonGuideLayer.OnLayerClickListener() {
-                @Override
-                public void onClick(int targetIndex, @NotNull ILayerController controller) {
-                    if (targetIndex >= 0) {
-                        controller.goNext();
-                    }
+    private CommonGuideLayer getLayer1() {
+        CommonGuideLayer layer = new CommonGuideLayer(this).
+                addHighlightTarget(findViewById(R.id.multi_guide_circle)).
+                withExtraView(LayoutInflater.from(this).inflate(R.layout.layer_multi_1, null), 0, 0, Location.TO_TOP);
+        layer.setOnLayerClickListener(new CommonGuideLayer.OnLayerClickListener() {
+            @Override
+            public void onClick(int targetIndex, @NotNull ILayerController controller) {
+                if (targetIndex >= 0) {
+                    controller.goNext();
                 }
-            });
-            setOnHighLightDrawListener(new OnHighLightDrawListener() {
-                @Override
-                public void onDraw(int index, @NotNull Rect rect, @NotNull Canvas canvas, @NotNull Paint paint) {
-                    float cx = (rect.left + rect.right)/2;
-                    float cy = (rect.top + rect.bottom)/2;
-                    float radius = Math.max((rect.right - rect.left)/2, (rect.bottom - rect.top)/2) + 10;
-                    canvas.drawCircle(cx, cy, radius, paint);
-                }
-            });
-        }
+            }
+        });
+        layer.setOnHighLightDrawListener(new CommonGuideLayer.OnHighLightDrawListener() {
+            @Override
+            public void onDraw(int index, @NotNull Rect rect, @NotNull Canvas canvas, @NotNull Paint paint) {
+                float cx = (rect.left + rect.right) / 2;
+                float cy = (rect.top + rect.bottom) / 2;
+                float radius = Math.max((rect.right - rect.left) / 2, (rect.bottom - rect.top) / 2) + 10;
+                canvas.drawCircle(cx, cy, radius, paint);
+            }
+        });
+        return layer;
     }
 
-    public class MultiLayer2 extends CommonGuideLayer {
-        public MultiLayer2(Activity activity) {
-            super(activity);
-        }
-
-        @Override
-        protected void onViewCreated(@NotNull Context context) {
-            addHighlightTarget(findViewById(R.id.multi_guide_ladder));
-            withExtraView(LayoutInflater.from(context).inflate(R.layout.layer_multi_2, null), 0, 0, Location.COVER);
-            setOnHighLightDrawListener(null);
-        }
+    private CommonGuideLayer getLayer2() {
+        CommonGuideLayer layer = new CommonGuideLayer(this).
+                addHighlightTarget(findViewById(R.id.multi_guide_ladder)).
+                withExtraView(LayoutInflater.from(this).inflate(R.layout.layer_multi_2, null), 0, 0, Location.COVER);
+        layer.setOnHighLightDrawListener(null);
+        return layer;
     }
 }
