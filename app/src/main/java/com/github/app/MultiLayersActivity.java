@@ -17,8 +17,6 @@ import com.github.easyguide.client.ILayerController;
 import com.github.easyguide.layer.CommonGuideLayer;
 import com.github.easyguide.layer.Location;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * Created by shenxl on 2018/8/14.
  */
@@ -46,7 +44,7 @@ public class MultiLayersActivity extends AppCompatActivity {
                 withExtraView(LayoutInflater.from(this).inflate(R.layout.layer_multi_1, null), 0, 0, Location.TO_TOP);
         layer.setOnLayerClickListener(new CommonGuideLayer.OnLayerClickListener() {
             @Override
-            public void onClick(int targetIndex, @NotNull ILayerController controller) {
+            public void onClick(int targetIndex, @NonNull ILayerController controller) {
                 if (targetIndex == 0) {
                     controller.goNext();
                 } else if (targetIndex == 1) {
@@ -58,7 +56,7 @@ public class MultiLayersActivity extends AppCompatActivity {
         });
         layer.setOnHighLightDrawListener(new CommonGuideLayer.OnHighLightDrawListener() {
             @Override
-            public void onDraw(int index, @NotNull Rect rect, @NotNull Canvas canvas, @NotNull Paint paint) {
+            public void onDraw(int index, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
                 canvas.drawRoundRect(new RectF(rect), 10, 10, paint);
             }
         });
@@ -74,7 +72,7 @@ public class MultiLayersActivity extends AppCompatActivity {
                         Location.TO_BOTTOM);
         layer.setOnLayerClickListener(new CommonGuideLayer.OnLayerClickListener() {
             @Override
-            public void onClick(int targetIndex, @NotNull ILayerController controller) {
+            public void onClick(int targetIndex, @NonNull ILayerController controller) {
                 if (targetIndex >= 0) {
                     controller.goNext();
                 }
@@ -82,7 +80,7 @@ public class MultiLayersActivity extends AppCompatActivity {
         });
         layer.setOnHighLightDrawListener(new CommonGuideLayer.OnHighLightDrawListener() {
             @Override
-            public void onDraw(int index, @NotNull Rect rect, @NotNull Canvas canvas, @NotNull Paint paint) {
+            public void onDraw(int index, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
                 float cx = (rect.left + rect.right) / 2;
                 float cy = (rect.top + rect.bottom) / 2;
                 float radius = Math.max((rect.right - rect.left) / 2, (rect.bottom - rect.top) / 2) + 10;
