@@ -52,8 +52,8 @@ class CommonGuideLayer(context: Context) : AbsGuideLayer() {
      * the target that was added lately
      *
      * @param view Customized extra view around the target that highlights, such as pictures, texts
-     * @param verticalOffset Offset in the vertical direction, offset>0 -> right, offset<0 -> left
-     * @param horizontalOffset Offset in the vertical direction, offset>0 -> bottom, offset<0 -> top
+     * @param verticalOffset Offset(px) in the vertical direction, offset>0 -> right, offset<0 -> left
+     * @param horizontalOffset Offset(px) in the vertical direction, offset>0 -> bottom, offset<0 -> top
      * @param locations Rules that orgnize the layout of extra view
      */
     fun withExtraView(view: View, verticalOffset: Int = 0, horizontalOffset: Int = 0, vararg locations: Location): CommonGuideLayer {
@@ -92,7 +92,7 @@ class CommonGuideLayer(context: Context) : AbsGuideLayer() {
         /**
          * Callback method to be invoked when layer is clicked
          * If targetIndex < 0, clicking outside targets area;
-         * If targetIndex >= 0, clicking inside targets area and targetIndex is the index of target that clicked
+         * If targetIndex >= 0, clicking inside targets area and targetIndex is the index of target that is clicked
          *
          * @param targetIndex
          * @param controller
