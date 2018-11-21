@@ -1,5 +1,8 @@
 package com.github.easyguide.layer
 
+import android.graphics.Rect
+import android.view.View
+
 /**
  * Created by shenxl on 2018/10/25.
  */
@@ -40,4 +43,14 @@ enum class Location {
      * Rule that aligns the target's right edge with extra-view's own right edge
      */
     ALIGN_RIGHT;
+
+    companion object {
+        fun getViewAbsRect(view: View): Rect {
+            val locView = IntArray(2)
+            view.getLocationOnScreen(locView)
+            return Rect().apply {
+                set(locView[0], locView[1], locView[0] + view.measuredWidth, locView[1] + view.measuredHeight)
+            }
+        }
+    }
 }

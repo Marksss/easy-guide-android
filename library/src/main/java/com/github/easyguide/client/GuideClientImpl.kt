@@ -6,7 +6,7 @@ import com.github.easyguide.layer.AbsGuideLayer
 /**
  * Created by shenxl on 2018/8/29.
  */
-internal class CommonGuideClient : IGuideClient {
+internal class GuideClientImpl : IGuideClient {
     override lateinit var currentLayer: AbsGuideLayer
     override lateinit var parentView: FrameLayout
     private val context

@@ -33,12 +33,8 @@ internal class GuideLayerView : RelativeLayout {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null)
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(View.MeasureSpec.makeMeasureSpec(View.MeasureSpec.getSize(widthMeasureSpec), View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(View.MeasureSpec.getSize(heightMeasureSpec), View.MeasureSpec.EXACTLY))
-    }
-
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        val rectSelf = Location.getViewAbsRect(this)
         val childCount = this.childCount
         for (i in 0 until childCount) {
             val child = this.getChildAt(i)
@@ -113,10 +109,11 @@ internal class GuideLayerView : RelativeLayout {
                     }
                 }
             }
-            child.layout(left + locBean.horizontalOffset,
-                    top + locBean.verticalOffset,
-                    right + locBean.horizontalOffset,
-                    bottom + locBean.verticalOffset)
+
+            child.layout(left + locBean.horizontalOffset - rectSelf.left,
+                    top + locBean.verticalOffset - rectSelf.top,
+                    right + locBean.horizontalOffset - rectSelf.left,
+                    bottom + locBean.verticalOffset - rectSelf.top)
         }
     }
 

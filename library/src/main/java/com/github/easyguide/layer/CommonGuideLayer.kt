@@ -34,7 +34,7 @@ class CommonGuideLayer(context: Context) : AbsGuideLayer() {
      */
     fun addHighlightTarget(view: View): CommonGuideLayer {
         targetCounts++
-        view.post { addHighlightTarget(view.getViewAbsRect()) }
+        view.post { addHighlightTarget(Location.getViewAbsRect(view)) }
         return this
     }
 
@@ -83,6 +83,8 @@ class CommonGuideLayer(context: Context) : AbsGuideLayer() {
     }
 
     private fun onDraw(index: Int, rect: Rect, canvas: Canvas, paint: Paint) {
+        val offset = Location.getViewAbsRect(layerView)
+        rect.offset(-offset.left, -offset.top)
         onHighLightDrawListener?.onDraw(index, rect, canvas, paint)
     }
 
@@ -111,20 +113,6 @@ class CommonGuideLayer(context: Context) : AbsGuideLayer() {
     }
 
     companion object {
-        private fun getStatusBarHeight(context: Context): Int {
-            val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
-            return context.resources.getDimensionPixelSize(resourceId)
-        }
-
-        fun View.getViewAbsRect(): Rect {
-            val locView = IntArray(2)
-            getLocationInWindow(locView)
-            return Rect().apply {
-                set(locView[0], locView[1], locView[0] + measuredWidth, locView[1] + measuredHeight)
-                offset(0, if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) -getStatusBarHeight(context) else 0)
-            }
-        }
-
         private val defaultTargetClick = object : OnLayerClickListener {
             override fun onClick(targetIndex: Int, controller: ILayerController) {
                 controller.goNext()
