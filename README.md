@@ -47,7 +47,7 @@ Customize the shape of highlight area：
 ```
 layer.setOnHighLightDrawListener(new CommonGuideLayer.OnHighLightDrawListener() {
     @Override
-    public void onDraw(int index, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
+    public boolean onDraw(int index, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
         // canvas.drawCircle(cx, cy, radius, paint);
         // canvas.drawRoundRect(new RectF(rect), r, r, paint);
         ...

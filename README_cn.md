@@ -47,7 +47,7 @@ layer.setOnLayerClickListener(new CommonGuideLayer.OnLayerClickListener() {
 ```
 layer.setOnHighLightDrawListener(new CommonGuideLayer.OnHighLightDrawListener() {
     @Override
-    public void onDraw(int index, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
+    public boolean onDraw(int index, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
         // canvas.drawCircle(cx, cy, radius, paint); 圆形高亮区域
         // canvas.drawRoundRect(new RectF(rect), r, r, paint); 圆角矩形区域 等等
         ...

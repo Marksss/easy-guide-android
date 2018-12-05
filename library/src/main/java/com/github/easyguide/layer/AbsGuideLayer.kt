@@ -9,7 +9,7 @@ import com.github.easyguide.client.ILayerController
  */
 
 abstract class AbsGuideLayer {
-    internal lateinit var controller: ILayerController
+    lateinit var controller: ILayerController
     internal var head: AbsGuideLayer? = null
     internal var next: AbsGuideLayer? = null
     private lateinit var view: View

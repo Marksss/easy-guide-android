@@ -17,7 +17,7 @@ class CommonGuideLayer(context: Context) : AbsGuideLayer() {
     var enterAnimation: Animation? = null
     var exitAnimation: Animation? = null
     var onLayerClickListener: OnLayerClickListener? = defaultTargetClick
-    var onHighLightDrawListener: OnHighLightDrawListener? = defaultHighlightDraw
+    var onHighLightDrawListener: OnHighLightDrawListener? = null
     var backgroundColor: Int
         get() = layerView.baseColor
         set(value) {layerView.baseColor = value}
@@ -85,7 +85,9 @@ class CommonGuideLayer(context: Context) : AbsGuideLayer() {
     private fun onDraw(index: Int, rect: Rect, canvas: Canvas, paint: Paint) {
         val offset = Location.getViewAbsRect(layerView)
         rect.offset(-offset.left, -offset.top)
-        onHighLightDrawListener?.onDraw(index, rect, canvas, paint)
+        if (onHighLightDrawListener?.onDraw(index, rect, canvas, paint) != true) {
+            defaultHighlightDraw.onDraw(index, rect, canvas, paint)
+        }
     }
 
     interface OnLayerClickListener {
@@ -108,8 +110,10 @@ class CommonGuideLayer(context: Context) : AbsGuideLayer() {
          * @param rect
          * @param canvas
          * @param paint
+         * @return true：intercept drawing the default highlight area；
+         *          false：show the highlight area by default
          */
-        fun onDraw(index: Int, rect: Rect, canvas: Canvas, paint: Paint)
+        fun onDraw(index: Int, rect: Rect, canvas: Canvas, paint: Paint): Boolean
     }
 
     companion object {
@@ -120,8 +124,9 @@ class CommonGuideLayer(context: Context) : AbsGuideLayer() {
         }
 
         private val defaultHighlightDraw = object : OnHighLightDrawListener {
-            override fun onDraw(index: Int, rect: Rect, canvas: Canvas, paint: Paint) {
+            override fun onDraw(index: Int, rect: Rect, canvas: Canvas, paint: Paint): Boolean {
                 canvas.drawRect(rect, paint)
+                return true
             }
         }
     }
