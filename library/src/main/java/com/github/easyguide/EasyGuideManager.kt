@@ -15,7 +15,8 @@ class EasyGuideManager private constructor(
         parentView: FrameLayout,
         private val guideClient: IGuideClient) : ILayerController by guideClient {
 
-    private var layerAdded: AbsGuideLayer? = null
+    private var headLayer: AbsGuideLayer? = null
+    private var tailLayer: AbsGuideLayer? = null
     var currentLayer: AbsGuideLayer? = null
         private set
         get() = guideClient.currentLayer
@@ -50,13 +51,11 @@ class EasyGuideManager private constructor(
         layer.controller = guideClient
 
         // chain-of-responsibility pattern
-        layerAdded?.let {
-            it.next = layer
-            layer.head = it.head
-        } ?: run {
-            layer.head = layer
+        if (headLayer == null) {
+            headLayer = layer
         }
-        layerAdded = layer
+        tailLayer?.next = layer
+        tailLayer = layer
         return this
     }
 
@@ -64,7 +63,7 @@ class EasyGuideManager private constructor(
      * Show the first layer that is added
      */
     fun show() {
-        guideClient.currentLayer = layerAdded?.head ?: throw IllegalArgumentException("Please check if GuideLayers is empty!!!")
+        guideClient.currentLayer = headLayer ?: throw IllegalArgumentException("Please check if GuideLayers is empty!!!")
         guideClient.show()
     }
 }
