@@ -7,9 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.github.easyguide.layer.AbsGuideLayer;
+import com.github.easyguide.layer.IGuideLayer;
 import com.github.easyguide.EasyGuideManager;
-import com.github.easyguide.layer.CommonGuideLayer;
+import com.github.easyguide.layer.GuideLayerImpl;
 
 /**
  * Created by shenxl on 2018/8/27.
@@ -35,8 +35,8 @@ public class DialogActivity extends AppCompatActivity {
                     public void onShow(DialogInterface dialogInterface) {
 
                         /*   EasyGuide starts  */
-                        AbsGuideLayer basicLayer = new CommonGuideLayer(DialogActivity.this).addHighlightTarget(view1.findViewById(R.id.dialog_top));
-                        mEasyGuideManager = new EasyGuideManager(dialog).addLayer(basicLayer);
+                        IGuideLayer basicLayer = GuideLayerImpl.Companion.coverDialog(dialog).addHighlightTarget(view1.findViewById(R.id.dialog_top));
+                        mEasyGuideManager = EasyGuideManager.Companion.create().addLayer(basicLayer);
                         mEasyGuideManager.show();
                         /*   EasyGuide ends  */
 

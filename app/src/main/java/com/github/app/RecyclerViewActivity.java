@@ -5,12 +5,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.github.easyguide.EasyGuideManager;
-import com.github.easyguide.layer.CommonGuideLayer;
+import com.github.easyguide.layer.GuideLayerImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +46,9 @@ public class RecyclerViewActivity extends AppCompatActivity {
                             && targetPosition < lastVisibleItemPosition) {
 
                         /*   EasyGuide starts  */
-                        new EasyGuideManager(RecyclerViewActivity.this).
+                        EasyGuideManager.Companion.create().
                                 addLayer(
-                                        new CommonGuideLayer(RecyclerViewActivity.this).
+                                        GuideLayerImpl.Companion.coverActivity(RecyclerViewActivity.this).
                                                 addHighlightTarget(mLayoutManager.findViewByPosition(targetPosition))
                                 ).show();
                         /*   EasyGuide ends  */
@@ -63,9 +62,9 @@ public class RecyclerViewActivity extends AppCompatActivity {
             public void run() {
 
                 /*   EasyGuide starts  */
-                new EasyGuideManager(RecyclerViewActivity.this).
+                EasyGuideManager.Companion.create().
                         addLayer(
-                                new CommonGuideLayer(RecyclerViewActivity.this).
+                                GuideLayerImpl.Companion.coverActivity(RecyclerViewActivity.this).
                                         addHighlightTarget(mLayoutManager.findViewByPosition(0))
                         ).show();
                 /*   EasyGuide ends  */

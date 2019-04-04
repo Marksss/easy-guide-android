@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.github.easyguide.EasyGuideManager;
-import com.github.easyguide.layer.CommonGuideLayer;
+import com.github.easyguide.layer.GuideLayerImpl;
 
 /**
  * Created by shenxl on 2018/8/23.
@@ -23,9 +23,9 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 /*   EasyGuide starts  */
-                new EasyGuideManager(StartActivity.this).
+                EasyGuideManager.Companion.create().
                         addLayer(
-                                new CommonGuideLayer(StartActivity.this).
+                                GuideLayerImpl.Companion.coverActivity(StartActivity.this).
                                         addHighlightTarget(findViewById(R.id.btn_basic_usage))
                         ).show();
                 /*   EasyGuide ends  */

@@ -8,7 +8,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
 import com.github.easyguide.EasyGuideManager;
-import com.github.easyguide.layer.CommonGuideLayer;
+import com.github.easyguide.layer.GuideLayerImpl;
 import com.github.easyguide.layer.Location;
 
 /**
@@ -26,7 +26,7 @@ public class AnimGuideActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 /*   EasyGuide starts  */
-                CommonGuideLayer layer = new CommonGuideLayer(AnimGuideActivity.this).
+                GuideLayerImpl layer = GuideLayerImpl.Companion.coverActivity(AnimGuideActivity.this).
                         addHighlightTarget(findViewById(R.id.btn_share)).
                         withExtraView(LayoutInflater.from(AnimGuideActivity.this).inflate(R.layout.layer_share, null),
                                 (int) DisplayUtils.dp2px(AnimGuideActivity.this, 20f),
@@ -43,7 +43,7 @@ public class AnimGuideActivity extends AppCompatActivity {
                 exitAnimation.setFillAfter(true);
                 layer.setExitAnimation(exitAnimation);
 
-                new EasyGuideManager(AnimGuideActivity.this).addLayer(layer).show();
+                EasyGuideManager.Companion.create().addLayer(layer).show();
                 /*   EasyGuide ends  */
 
             }

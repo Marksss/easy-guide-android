@@ -10,7 +10,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.github.easyguide.EasyGuideManager;
-import com.github.easyguide.layer.CommonGuideLayer;
+import com.github.easyguide.layer.GuideLayerImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +39,9 @@ public class ListViewActivity extends AppCompatActivity {
             @Override
             public void run() {
                 /*   EasyGuide starts  */
-                new EasyGuideManager(ListViewActivity.this).
+                EasyGuideManager.Companion.create().
                         addLayer(
-                                new CommonGuideLayer(ListViewActivity.this).
+                                GuideLayerImpl.Companion.coverActivity(ListViewActivity.this).
                                         addHighlightTarget(getViewByPosition(3, listview))
                         ).show();
                 /*   EasyGuide ends  */
@@ -54,9 +54,9 @@ public class ListViewActivity extends AppCompatActivity {
                 View item = getViewByPosition(37, listview);
                 if (scrollState == SCROLL_STATE_IDLE && item != null){
                     /*   EasyGuide starts  */
-                    new EasyGuideManager(ListViewActivity.this).
+                    EasyGuideManager.Companion.create().
                             addLayer(
-                                    new CommonGuideLayer(ListViewActivity.this).
+                                    GuideLayerImpl.Companion.coverActivity(ListViewActivity.this).
                                             addHighlightTarget(item)
                             ).show();
                     /*   EasyGuide ends  */
