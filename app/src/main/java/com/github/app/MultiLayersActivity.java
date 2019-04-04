@@ -56,8 +56,9 @@ public class MultiLayersActivity extends AppCompatActivity {
         });
         layer.setOnHighLightDrawListener(new CommonGuideLayer.OnHighLightDrawListener() {
             @Override
-            public void onDraw(int index, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
+            public boolean onDraw(int index, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
                 canvas.drawRoundRect(new RectF(rect), 10, 10, paint);
+                return true;
             }
         });
         return layer;
@@ -80,11 +81,12 @@ public class MultiLayersActivity extends AppCompatActivity {
         });
         layer.setOnHighLightDrawListener(new CommonGuideLayer.OnHighLightDrawListener() {
             @Override
-            public void onDraw(int index, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
+            public boolean onDraw(int index, @NonNull Rect rect, @NonNull Canvas canvas, @NonNull Paint paint) {
                 float cx = (rect.left + rect.right) / 2;
                 float cy = (rect.top + rect.bottom) / 2;
                 float radius = Math.max((rect.right - rect.left) / 2, (rect.bottom - rect.top) / 2) + 10;
                 canvas.drawCircle(cx, cy, radius, paint);
+                return true;
             }
         });
         return layer;
