@@ -21,6 +21,7 @@ import com.github.easyguide.layer.Location;
  * Created by shenxl on 2018/8/14.
  */
 public class MultiLayersActivity extends AppCompatActivity {
+    private EasyGuideManager mManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +29,22 @@ public class MultiLayersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_multi_layers);
 
         /*   EasyGuide starts  */
-        new EasyGuideManager().
+        mManager = new EasyGuideManager().
                 addLayer(getLayer0()).
                 addLayer(getLayer1()).
-                addLayer(getLayer2()).
-                show();
+                addLayer(getLayer2());
+        if (savedInstanceState != null) {
+            mManager.show(savedInstanceState.getInt("guideIndex", 0));
+        } else {
+            mManager.show();
+        }
         /*   EasyGuide ends  */
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt("guideIndex", mManager.getCurrentLayerIndex());
     }
 
     private GuideLayerImpl getLayer0() {
