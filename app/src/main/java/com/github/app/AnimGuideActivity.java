@@ -43,7 +43,7 @@ public class AnimGuideActivity extends AppCompatActivity {
                 exitAnimation.setFillAfter(true);
                 layer.setExitAnimation(exitAnimation);
 
-                EasyGuideManager.Companion.create().addLayer(layer).show();
+                new EasyGuideManager().addLayer(layer).show();
                 /*   EasyGuide ends  */
 
             }

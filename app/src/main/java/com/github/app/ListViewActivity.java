@@ -39,7 +39,7 @@ public class ListViewActivity extends AppCompatActivity {
             @Override
             public void run() {
                 /*   EasyGuide starts  */
-                EasyGuideManager.Companion.create().
+                new EasyGuideManager().
                         addLayer(
                                 GuideLayerImpl.Companion.coverActivity(ListViewActivity.this).
                                         addHighlightTarget(getViewByPosition(3, listview))
@@ -54,7 +54,7 @@ public class ListViewActivity extends AppCompatActivity {
                 View item = getViewByPosition(37, listview);
                 if (scrollState == SCROLL_STATE_IDLE && item != null){
                     /*   EasyGuide starts  */
-                    EasyGuideManager.Companion.create().
+                    new EasyGuideManager().
                             addLayer(
                                     GuideLayerImpl.Companion.coverActivity(ListViewActivity.this).
                                             addHighlightTarget(item)

@@ -23,7 +23,7 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 /*   EasyGuide starts  */
-                EasyGuideManager.Companion.create().
+                new EasyGuideManager().
                         addLayer(
                                 GuideLayerImpl.Companion.coverActivity(StartActivity.this).
                                         addHighlightTarget(findViewById(R.id.btn_basic_usage))

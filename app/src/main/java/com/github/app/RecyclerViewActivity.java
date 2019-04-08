@@ -46,7 +46,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
                             && targetPosition < lastVisibleItemPosition) {
 
                         /*   EasyGuide starts  */
-                        EasyGuideManager.Companion.create().
+                        new EasyGuideManager().
                                 addLayer(
                                         GuideLayerImpl.Companion.coverActivity(RecyclerViewActivity.this).
                                                 addHighlightTarget(mLayoutManager.findViewByPosition(targetPosition))
@@ -62,7 +62,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
             public void run() {
 
                 /*   EasyGuide starts  */
-                EasyGuideManager.Companion.create().
+                new EasyGuideManager().
                         addLayer(
                                 GuideLayerImpl.Companion.coverActivity(RecyclerViewActivity.this).
                                         addHighlightTarget(mLayoutManager.findViewByPosition(0))

@@ -28,7 +28,7 @@ public class MultiLayersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_multi_layers);
 
         /*   EasyGuide starts  */
-        EasyGuideManager.Companion.create().
+        new EasyGuideManager().
                 addLayer(getLayer0()).
                 addLayer(getLayer1()).
                 addLayer(getLayer2()).

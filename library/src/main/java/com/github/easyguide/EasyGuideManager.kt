@@ -11,13 +11,12 @@ import com.github.easyguide.layer.IGuideLayer
 /**
  * Created by shenxl on 2018/8/16.
  */
-class EasyGuideManager private constructor(private val guideClient: IGuideClient) :
-        ILayerController by guideClient {
+class EasyGuideManager {
 
     private var headLayer: IGuideLayer? = null
     private var tailLayer: IGuideLayer? = null
-    var currentLayer: IGuideLayer? = null
-        private set
+    private val guideClient: IGuideClient = GuideClientImpl()
+    val currentLayer: IGuideLayer?
         get() = guideClient.currentLayer
 
     /**
@@ -41,9 +40,5 @@ class EasyGuideManager private constructor(private val guideClient: IGuideClient
     fun show() {
         guideClient.currentLayer = headLayer ?: throw IllegalArgumentException("Please check if GuideLayers is empty!!!")
         guideClient.show()
-    }
-
-    companion object {
-        fun create() = EasyGuideManager(GuideClientImpl())
     }
 }

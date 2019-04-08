@@ -36,7 +36,7 @@ public class DialogActivity extends AppCompatActivity {
 
                         /*   EasyGuide starts  */
                         IGuideLayer basicLayer = GuideLayerImpl.Companion.coverDialog(dialog).addHighlightTarget(view1.findViewById(R.id.dialog_top));
-                        mEasyGuideManager = EasyGuideManager.Companion.create().addLayer(basicLayer);
+                        mEasyGuideManager = new EasyGuideManager().addLayer(basicLayer);
                         mEasyGuideManager.show();
                         /*   EasyGuide ends  */
 
@@ -47,7 +47,7 @@ public class DialogActivity extends AppCompatActivity {
                     public void onDismiss(DialogInterface dialog) {
                         // This is strongly recommended in case of memory leak
                         if (mEasyGuideManager != null){
-                            mEasyGuideManager.dismiss();
+                            mEasyGuideManager.getCurrentLayer().getController().dismiss();
                         }
                     }
                 });
